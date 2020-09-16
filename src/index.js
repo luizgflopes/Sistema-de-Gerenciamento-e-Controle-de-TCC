@@ -5,6 +5,8 @@ import * as serviceWorker from "./serviceWorker";
 import MainPage from "./pages/Main-Page";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import CadastroPage from './pages/Cadastro-page'
+import ConsultaUsuarioPages from './pages/ConsultaUsuarioPages'
+
 ReactDOM.render(
   <React.StrictMode>
     <Router>
@@ -14,6 +16,9 @@ ReactDOM.render(
         </Route>
         <Route path="/criarconta">
           <CadastroPage />
+        </Route>
+        <Route path="/consultaUsuario">
+          <ConsultaUsuarioPages />
         </Route>
         <Route path="/home">
         </Route>
