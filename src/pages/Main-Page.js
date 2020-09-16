@@ -53,7 +53,7 @@ export default function MainPage() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-        Sistema de gerenciamento de TCC - Jordan Olá mundo
+        Sistema de gerenciamento de TCC - Jordan Olá mundo 
         </Typography>
       <form className={classes.form} noValidate>
         <TextField
