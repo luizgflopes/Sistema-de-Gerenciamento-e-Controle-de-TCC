@@ -10,7 +10,24 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Icon from '@material-ui/core/Icon';
 import Newton from '../images/newton.png'
 import Hidden from '@material-ui/core/Hidden';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
 
+function listaUsuario(nome,email,curso,matricula,unidadeCurso){
+  return {nome,email,curso,matricula,unidadeCurso};
+}
+
+const dadosListaUsuario=[
+  listaUsuario('Luiz Gustavo','luizgustavo-fl@hotmail.com','SI','123456789','Silva Lobo'),
+  listaUsuario('Gustavo','gustavo-fl@hotmail.com','ADS','9998547','Silva Lobo'),
+  listaUsuario('Luiz','luiz-fl@hotmail.com','DIREITO','114455895','Silva Lobo'),
+  listaUsuario('Bob','bob@hotmail.com','FARMACIA','111222333','Carlos Luz'),
+  listaUsuario('Frederico','frederico@hotmail.com','ENG. CIVIL','000000000','Buritis')
+]
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -77,7 +94,23 @@ const useStyles = makeStyles((theme) => ({
   gridPaginacao:{
     alignItems:'center',
     paddingRight: '34%'
-  }
+  },
+  paperTabela: {
+    padding: theme.spacing(5),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+    marginTop:'10'
+  },
+  table: {
+    minWidth: 650,
+  },
+  gridCentral:{
+    marginTop: '100px',
+    backgroundColor: 'gainsboro'
+  },
+  teste:{
+    backgroundColor: 'green'
+  },
 }));
 
 export default function ConsultaUsuarioPages() {
@@ -150,7 +183,28 @@ export default function ConsultaUsuarioPages() {
           <Paper elevation={2} className={classes.Paper, classes.paperLista}>
             
             
-            
+          <TableContainer component={Paper}>
+                  <Table className={classes.table} aria-label="simple table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Nome</TableCell>
+                        <TableCell textAlign="left">E-mail</TableCell>
+                        <TableCell align="left">Curso</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {dadosListaUsuario.map((linha) => (
+                        <TableRow key={linha.nome}>
+                          <TableCell component="th" scope="row">
+                            {linha.nome}
+                          </TableCell>
+                          <TableCell align="left">{linha.email}</TableCell>
+                          <TableCell align="left">{linha.curso}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
             
             
 
