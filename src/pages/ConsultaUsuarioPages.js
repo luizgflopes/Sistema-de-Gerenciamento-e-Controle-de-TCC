@@ -16,17 +16,18 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
+import Tooltip from '@material-ui/core/Tooltip';
 
-function listaUsuario(nome,email,curso,matricula,unidadeCurso){
-  return {nome,email,curso,matricula,unidadeCurso};
+function listaUsuario(nome, email, curso, matricula, unidadeCurso) {
+  return { nome, email, curso, matricula, unidadeCurso };
 }
 
-const dadosListaUsuario=[
-  listaUsuario('Luiz Gustavo','luizgustavo-fl@hotmail.com','SI','123456789','Silva Lobo'),
-  listaUsuario('Gustavo','gustavo-fl@hotmail.com','ADS','9998547','Silva Lobo'),
-  listaUsuario('Luiz','luiz-fl@hotmail.com','DIREITO','114455895','Silva Lobo'),
-  listaUsuario('Bob','bob@hotmail.com','FARMACIA','111222333','Carlos Luz'),
-  listaUsuario('Frederico','frederico@hotmail.com','ENG. CIVIL','000000000','Buritis')
+const dadosListaUsuario = [
+  listaUsuario('Luiz Gustavo', 'luizgustavo-fl@hotmail.com', 'SI', '123456789', 'Silva Lobo'),
+  listaUsuario('Gustavo', 'gustavo-fl@hotmail.com', 'ADS', '9998547', 'Silva Lobo'),
+  listaUsuario('Luiz', 'luiz-fl@hotmail.com', 'DIREITO', '114455895', 'Silva Lobo'),
+  listaUsuario('Bob', 'bob@hotmail.com', 'FARMACIA', '111222333', 'Carlos Luz'),
+  listaUsuario('Frederico', 'frederico@hotmail.com', 'ENG. CIVIL', '000000000', 'Buritis')
 ]
 
 const useStyles = makeStyles((theme) => ({
@@ -89,26 +90,27 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
     flex: '1 0 auto',
     backgroundColor: '#265891',
-    boxShadow: '0 0 black'
+    boxShadow: '0 0 black',
+    color: 'white',
   },
-  gridPaginacao:{
-    alignItems:'center',
+  gridPaginacao: {
+    alignItems: 'center',
     paddingRight: '34%'
   },
   paperTabela: {
     padding: theme.spacing(5),
     textAlign: 'center',
     color: theme.palette.text.secondary,
-    marginTop:'10'
+    marginTop: '10'
   },
   table: {
     minWidth: 650,
   },
-  gridCentral:{
+  gridCentral: {
     marginTop: '100px',
     backgroundColor: 'gainsboro'
   },
-  teste:{
+  teste: {
     backgroundColor: 'green'
   },
 }));
@@ -151,29 +153,47 @@ export default function ConsultaUsuarioPages() {
             </form>
           </Container>
           <Container component='div'>
-            <Button
-              variant="contained"
-              color="secondary"
-              className={classes.botoes}
-              startIcon={<DeleteIcon />}>
-              Excluir
+            <Tooltip title="Adicionar Usuário" interactive>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.botoes}
+                startIcon={<Icon>add</Icon>}
+              >
+                Adicionar
+              </Button>
+            </Tooltip>
+            <Tooltip title="Editar Usuário" interactive>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.botoes}
+                startIcon={<Icon>edit</Icon>}
+              >
+                Editar
             </Button>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: 'green', color: 'white' }}
-              className={classes.botoes}
-              startIcon={<Icon>edit</Icon>}
-            >
-              Editar
+            </Tooltip>
+            <Tooltip title="Pesquisar Usuário" interactive>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.botoes}
+                startIcon={<Icon>search</Icon>}
+                label="essd"
+              >
+                Pesquisar
             </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.botoes}
-              startIcon={<Icon>search</Icon>}
-            >
-              Pesquisar
+            </Tooltip>
+            <Tooltip title="Excluir Usuário" interactive>
+              <Button
+                variant="contained"
+                style={{ backgroundColor: 'red', color: 'white' }}
+                className={classes.botoes}
+                startIcon={<DeleteIcon />}
+              >
+                Excluir
             </Button>
+            </Tooltip>
           </Container>
         </Paper>
 
@@ -181,36 +201,36 @@ export default function ConsultaUsuarioPages() {
         {/** Tentar Colocar a Lista aqui a abixo - Layout Simular ao de Cima!*/}
         <Container component='div'>
           <Paper elevation={2} className={classes.Paper, classes.paperLista}>
-            
-            
-          <TableContainer component={Paper}>
-                  <Table className={classes.table} aria-label="simple table">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Nome</TableCell>
-                        <TableCell textAlign="left">E-mail</TableCell>
-                        <TableCell align="left">Curso</TableCell>
-                        <TableCell align="left">Matricula</TableCell>
-                        <TableCell align="left">Unidade do Curso</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {dadosListaUsuario.map((linha) => (
-                        <TableRow key={linha.nome}>
-                          <TableCell component="th" scope="row">
-                            {linha.nome}
-                          </TableCell>
-                          <TableCell align="left">{linha.email}</TableCell>
-                          <TableCell align="left">{linha.curso}</TableCell>
-                          <TableCell align="left">{linha.matricula}</TableCell>
-                          <TableCell align="left">{linha.unidadeCurso}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-            
-            
+
+
+            <TableContainer component={Paper}>
+              <Table className={classes.table} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Nome</TableCell>
+                    <TableCell textAlign="left">E-mail</TableCell>
+                    <TableCell align="left">Curso</TableCell>
+                    <TableCell align="left">Matricula</TableCell>
+                    <TableCell align="left">Unidade do Curso</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {dadosListaUsuario.map((linha) => (
+                    <TableRow key={linha.nome}>
+                      <TableCell component="th" scope="row">
+                        {linha.nome}
+                      </TableCell>
+                      <TableCell align="left">{linha.email}</TableCell>
+                      <TableCell align="left">{linha.curso}</TableCell>
+                      <TableCell align="left">{linha.matricula}</TableCell>
+                      <TableCell align="left">{linha.unidadeCurso}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+
+
 
             <Grid className={classes.gridPaginacao}>
               <TablePagination
@@ -224,7 +244,7 @@ export default function ConsultaUsuarioPages() {
                 backIconButtonText={'Voltar'}
                 labelRowsPerPage={'Linhas por página'}
               />
-            </Grid>           
+            </Grid>
           </Paper>
         </Container>
       </Container>
