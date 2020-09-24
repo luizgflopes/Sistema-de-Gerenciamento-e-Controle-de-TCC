@@ -190,6 +190,8 @@ export default function ConsultaUsuarioPages() {
                         <TableCell>Nome</TableCell>
                         <TableCell textAlign="left">E-mail</TableCell>
                         <TableCell align="left">Curso</TableCell>
+                        <TableCell align="left">Matricula</TableCell>
+                        <TableCell align="left">Unidade do Curso</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -200,6 +202,8 @@ export default function ConsultaUsuarioPages() {
                           </TableCell>
                           <TableCell align="left">{linha.email}</TableCell>
                           <TableCell align="left">{linha.curso}</TableCell>
+                          <TableCell align="left">{linha.matricula}</TableCell>
+                          <TableCell align="left">{linha.unidadeCurso}</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
