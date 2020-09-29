@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import MainPage from "./pages/Main-Page";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import CadastroPage from './pages/Cadastro-page'
 import ConsultaUsuarioPages from './pages/ConsultaUsuarioPages'
 
@@ -18,6 +18,9 @@ ReactDOM.render(
           <CadastroPage />
         </Route>
         <Route path="/consultaUsuario">
+          <ConsultaUsuarioPages />
+        </Route>
+        <Route path="/editar/:id">
           <ConsultaUsuarioPages />
         </Route>
         <Route path="/home">
