@@ -146,9 +146,8 @@ const useStyles = makeStyles((theme) => ({
 export default function ConsultaUsuarioPages() {
   const classes = useStyles();
 
-  {
     /** Relacionado a Paginação */
-  }
+  
   const [page, setPage] = React.useState(2);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -162,9 +161,8 @@ export default function ConsultaUsuarioPages() {
 
   const [id, setId] = React.useState(0);
 
-  {
     /** Relacionado a Selecao da Lista de Usuário*/
-  }
+
   const activeRow = (event, linha) => {
     event.preventDefault();
     setId(linha.id);
