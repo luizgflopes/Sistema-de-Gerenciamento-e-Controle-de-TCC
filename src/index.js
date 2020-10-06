@@ -2,23 +2,20 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
-import MainPage from "./pages/Main-Page";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import CadastroPage from './pages/Cadastro-page'
-import ConsultaUsuarioPages from './pages/ConsultaUsuarioPages'
-
+import CronogramaPage from "./pages/Cronograma-page";
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Switch>
         <Route exact path="/">
-          <MainPage />
         </Route>
         <Route path="/criarconta">
           <CadastroPage />
         </Route>
-        <Route path="/consultaUsuario">
-          <ConsultaUsuarioPages />
+        <Route path="/cronograma">
+          <CronogramaPage/>
         </Route>
         <Route path="/home">
         </Route>
@@ -28,7 +25,7 @@ ReactDOM.render(
   document.getElementById("root")
 );
 
-// If you want your app to work offline and load faster, you can chang
+// If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
