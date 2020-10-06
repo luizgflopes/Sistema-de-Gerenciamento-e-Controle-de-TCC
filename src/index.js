@@ -7,6 +7,8 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import CadastroPage from './pages/Cadastro-page';
 import ConsultaUsuarioPages from './pages/ConsultaUsuarioPages';
 import NovoCurso from './pages/NovoCurso';
+import EditarCurso from './pages/EditarCurso';
+import PesquisarCurso from './pages/PesquisarCurso';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -23,6 +25,12 @@ ReactDOM.render(
         </Route>
         <Route path="/NovoCurso">
           <NovoCurso />
+        </Route>
+        <Route path="/EditarCurso">
+          <EditarCurso />
+        </Route>
+        <Route path="/PesquisarCurso">
+          <PesquisarCurso />
         </Route>
         <Route path="/home">
         </Route>
