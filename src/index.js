@@ -9,6 +9,7 @@ import ConsultaUsuarioPages from './pages/ConsultaUsuarioPages';
 import NovoCurso from './pages/NovoCurso';
 import EditarCurso from './pages/EditarCurso';
 import PesquisarCurso from './pages/PesquisarCurso';
+import CronogramaPage from './pages/Cronograma-page'
 
 ReactDOM.render(
   <React.StrictMode>
@@ -28,6 +29,9 @@ ReactDOM.render(
         </Route>
         <Route path="/NovoCurso">
           <NovoCurso />
+        </Route>
+        <Route path="/cronograma">
+          <CronogramaPage />
         </Route>
         <Route path="/EditarCurso">
           <EditarCurso />
