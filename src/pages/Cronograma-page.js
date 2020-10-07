@@ -1,5 +1,4 @@
 import React from "react";
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
@@ -10,7 +9,6 @@ import logo from "../images/iconetcc.png";
 import Container from "@material-ui/core/Container";
 import { useHistory, Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
-import { KeyboardDatePicker } from "@material-ui/pickers";
 
 import MenuItem from "@material-ui/core/MenuItem";
 import DefaultLayoutComponent from "../component/DefaultLayoutComponent";

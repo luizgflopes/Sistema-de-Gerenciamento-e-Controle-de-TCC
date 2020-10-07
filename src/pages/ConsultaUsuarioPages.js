@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Container from "@material-ui/core/Container";
 import { makeStyles, Grid, TablePagination } from "@material-ui/core/";
 import TextField from "@material-ui/core/TextField";
@@ -17,52 +17,7 @@ import TableBody from "@material-ui/core/TableBody";
 import Tooltip from "@material-ui/core/Tooltip";
 import { useHistory } from "react-router-dom";
 
-function listaUsuario(id, nome, email, curso, matricula, unidadeCurso) {
-  return { id, nome, email, curso, matricula, unidadeCurso };
-}
-
-const dadosListaUsuario = [
-  listaUsuario(
-    1,
-    "Luiz Gustavo",
-    "luizgustavo-fl@hotmail.com",
-    "SI",
-    "123456789",
-    "Silva Lobo"
-  ),
-  listaUsuario(
-    2,
-    "Gustavo",
-    "gustavo-fl@hotmail.com",
-    "ADS",
-    "9998547",
-    "Silva Lobo"
-  ),
-  listaUsuario(
-    3,
-    "Luiz",
-    "luiz-fl@hotmail.com",
-    "DIREITO",
-    "114455895",
-    "Silva Lobo"
-  ),
-  listaUsuario(
-    4,
-    "Bob",
-    "bob@hotmail.com",
-    "FARMACIA",
-    "111222333",
-    "Carlos Luz"
-  ),
-  listaUsuario(
-    5,
-    "Frederico",
-    "frederico@hotmail.com",
-    "ENG. CIVIL",
-    "000000000",
-    "Buritis"
-  ),
-];
+const axios = require('axios')
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -143,12 +98,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 export default function ConsultaUsuarioPages() {
   const classes = useStyles();
+  const [listaUsuario, setListaUsuario] = useState([]);
 
-  {
-    /** Relacionado a Paginação */
-  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    console.log("came first use efect");
+    axios
+      .get(
+        "http://localhost:3001/usuario"
+      )
+      .then(function (response) {
+      
+        console.log(response);
+      })
+      .catch(function (error) {
+      })
+      .then(function () {
+      });
+
+  });
+
   const [page, setPage] = React.useState(2);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -162,9 +134,7 @@ export default function ConsultaUsuarioPages() {
 
   const [id, setId] = React.useState(0);
 
-  {
-    /** Relacionado a Selecao da Lista de Usuário*/
-  }
+
   const activeRow = (event, linha) => {
     event.preventDefault();
     setId(linha.id);
@@ -281,7 +251,7 @@ export default function ConsultaUsuarioPages() {
                   </TableRow>
                 </TableHead>
                 <TableBody className={"MuiTableCell-body"}>
-                  {dadosListaUsuario.map((linha) => (
+                  {listaUsuario.map((linha) => (
                     <TableRow
                       key={linha.id}
                       selected={linha.id === id}
