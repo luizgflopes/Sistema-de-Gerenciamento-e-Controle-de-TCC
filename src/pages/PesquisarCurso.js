@@ -1,16 +1,48 @@
-import React from 'react';
-import Container from '@material-ui/core/Container';
-import Avatar from "@material-ui/core/Avatar";
-import AssignmentIcon from '@material-ui/icons/Assignment';
+import React from "react";
+import Container from "@material-ui/core/Container";
 import { makeStyles, Grid, TablePagination } from "@material-ui/core/";
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import DeleteIcon from '@material-ui/icons/Delete';
-import Icon from '@material-ui/core/Icon';
-import Newton from '../images/newton.png'
-import Hidden from '@material-ui/core/Hidden';
+import TextField from "@material-ui/core/TextField";
+import Paper from "@material-ui/core/Paper";
+import Button from "@material-ui/core/Button";
+import DeleteIcon from "@material-ui/icons/Delete";
+import Icon from "@material-ui/core/Icon";
+import Newton from "../images/newton.png";
+import Hidden from "@material-ui/core/Hidden";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import Tooltip from "@material-ui/core/Tooltip";
+import { useHistory } from "react-router-dom";
 
+function listaCurso(codCurso, nomeCurso) {
+  return { codCurso, nomeCurso };
+}
+
+const ListaCurso = [
+  listaCurso(
+    "001",
+    "Sistemas de informação"
+  ),
+  listaCurso(
+    "002",
+    "Análise e desenvolvimento de sistemas"
+  ),
+  listaCurso(
+    "003",
+    "Ciências da computação"
+  ),
+  listaCurso(
+    "004",
+    "Engenharia de software"
+  ),
+  listaCurso(
+    "005",
+    "Matemática da computação"
+  ),
+];
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   botoes: {
     marginRight: '-230px',
     marginBottom: '50px',
-    marginLeft: '290px',
+    marginLeft: '250px',
   },
   containerC: {
     marginTop: '60px'
@@ -65,19 +97,38 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '47px'
   },
   paperDireita: {
-    marginLeft: '-250px',
-    marginTop: '14px',
-    fontSize: '24px',
-    textAlign: 'left',
-    color: theme.palette.text.secondary,
-    flex: '1 0 auto',
-    backgroundColor: '#265891',
-    boxShadow: '0 0 black'
+    marginLeft: "-250px",
+    marginTop: "14px",
+    fontSize: "24px",
+    textAlign: "left",
+    color: "white",
+    flex: "1 0 auto",
+    backgroundColor: "#265891",
+    boxShadow: "0 0 black",
   },
   gridPaginacao:{
     alignItems:'center',
     paddingRight: '34%'
-  }
+  },
+  paperTabela: {
+    padding: theme.spacing(5),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+    marginTop: "10",
+  },
+  table: {
+    minWidth: 650,
+    backgroundColor: theme.palette.action.hover
+  },
+  tableHead: {
+    backgroundColor: "#265891",
+    color: theme.palette.common.white,
+    textAlign: 'center'
+  },
+  gridCentral: {
+    marginTop: "100px",
+    backgroundColor: "gainsboro",
+  },
 }));
 
 export default function PesquisarCurso() {
@@ -94,6 +145,25 @@ export default function PesquisarCurso() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  const [codCurso, setcodCurso] = React.useState(0);
+  
+  /** Relacionado a Seleção da Lista de Curso*/
+  const activeRow = (event, linha) => {
+    event.preventDefault();
+    setcodCurso(linha.codCurso);
+  };
+
+  const hostHistory = useHistory();
+
+  const adicionarButtonClick = () => {
+    hostHistory.push("/NovoCurso");
+  };
+
+  const editarButtonClick = () => {
+    hostHistory.push("/EditarCurso");
+  };
+
   return (
     <Container maxWidth="lg" className={classes.containerC}>
       <Container component='div'>
@@ -115,37 +185,95 @@ export default function PesquisarCurso() {
             </form>
           </Container>
           <Container component='div'>
-            <Button
-              variant="contained"
-              color="secondary"
-              className={classes.botoes}
-              startIcon={<DeleteIcon />}>
-              Excluir
-            </Button>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: 'green', color: 'white' }}
-              className={classes.botoes}
-              startIcon={<Icon>edit</Icon>}
-            >
-              Editar
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.botoes}
-              startIcon={<Icon>search</Icon>}
-            >
-              Pesquisar
-            </Button>
+          <Tooltip title="Adicionar Curso" interactive>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.botoes}
+                startIcon={<Icon>add</Icon>}
+                onClick={() => {
+                  adicionarButtonClick();
+                }}
+              >
+                Adicionar
+              </Button>
+            </Tooltip>
+            <Tooltip title="Editar Curso" interactive>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.botoes}
+                startIcon={<Icon>edit</Icon>}
+                onClick={() => {
+                  editarButtonClick();
+                }}
+              >
+                Editar
+              </Button>
+            </Tooltip>
+            <Tooltip title="Pesquisar Curso" interactive>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.botoes}
+                startIcon={<Icon>search</Icon>}
+                label="search"
+              >
+                Pesquisar
+              </Button>
+            </Tooltip>
+            <Tooltip title="Excluir Curso" interactive>
+              <Button
+                variant="contained"
+                style={{ backgroundColor: "red", color: "white" }}
+                className={classes.botoes}
+                startIcon={<DeleteIcon />}
+              >
+                Excluir
+              </Button>
+            </Tooltip>
           </Container>
         </Paper>
 
-
-        {/** Tentar Colocar a Lista aqui a abixo - Layout Simular ao de Cima!*/}
+        {/** Tentar Colocar a Lista aqui a abaixo - Layout Simular ao de Cima!*/}
         <Container component='div'>
           <Paper elevation={3} className={classes.Paper, classes.paperLista}>
-
+          <TableContainer component={Paper}>
+              <Table className={classes.table}>
+                <TableHead className={"MuiTableCell-head"}>
+                  <TableRow className={classes.tableHead}>
+                    <TableCell className={"MuiTableCell-alignCenter", classes.tableHead}>
+                      Código do Curso
+                    </TableCell>
+                    <TableCell className={"MuiTableCell-alignCenter", classes.tableHead}>
+                      Nome do Curso
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody className={"MuiTableCell-body"}>
+                  {ListaCurso.map((linha) => (
+                    <TableRow
+                      key={linha.codCurso}
+                      selected={linha.codCurso === codCurso}
+                      onClick={(event) => {
+                        activeRow(event, linha);
+                      }}
+                    >
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        className={"MuiTableCell-alignCenter"}
+                      >
+                        {linha.codCurso}
+                      </TableCell>
+                      <TableCell className={"MuiTableCell-alignCenter"}>
+                        {linha.nomeCurso}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
             <Grid className={classes.gridPaginacao}>
               <TablePagination
                 component="div"

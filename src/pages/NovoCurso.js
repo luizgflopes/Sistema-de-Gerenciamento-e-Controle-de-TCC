@@ -13,6 +13,8 @@ import { useHistory, Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { useState } from "react";
+import Icon from '@material-ui/core/Icon';
+import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles((theme) => ({
   configuracaopagina: {
@@ -31,9 +33,18 @@ const useStyles = makeStyles((theme) => ({
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(3),
   },
-  botaosalvar: {
-    margin: theme.spacing(3, 0, 2),
+  botaocancelar: {
+    margin: theme.spacing(3),
+    width: theme.spacing(20),
+    height: theme.spacing(5),
+    margintop: theme.spacing(20)
   },
+  botaosalvar: {
+    margin: theme.spacing(1),
+    width: theme.spacing(20),
+    height: theme.spacing(5),
+    margintop: theme.spacing(20)
+  }
 }));
 
 export default function NewCourse() {
@@ -42,6 +53,12 @@ export default function NewCourse() {
     codigocurso: null,
     nomecurso: null,
 });
+
+const hostHistory = useHistory();
+
+const cancelButtonClick = () => {
+  hostHistory.push("/PesquisarCurso");
+};
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -83,15 +100,30 @@ export default function NewCourse() {
                 * Campos obrigatórios
             </Typography>
           </Grid>
+          <Tooltip title="Cancelar Cadastro" interactive>
+          <Button
+            variant="contained"
+            style={{ backgroundColor: 'red', color: 'white' }}
+            className={classes.botaocancelar}
+            startIcon={<Icon>cancel</Icon>}
+            onClick={() => {
+              cancelButtonClick();
+            }}
+            >
+            Cancelar
+          </Button>
+          </Tooltip>
+          <Tooltip title="Salvar Curso" interactive>
           <Button
             type="botaosalvar"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.botaosalvar}
-          >
+            >
             Salvar
           </Button>
+          </Tooltip>
         </form>
       </div>
     </Container>
