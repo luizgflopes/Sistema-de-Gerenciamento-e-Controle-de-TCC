@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import Container from "@material-ui/core/Container";
 import { makeStyles, Grid, TablePagination } from "@material-ui/core/";
 import TextField from "@material-ui/core/TextField";
@@ -16,54 +16,7 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import Tooltip from "@material-ui/core/Tooltip";
 import { useHistory } from "react-router-dom";
-
-function listaUsuario(id, nome, email, curso, matricula, unidadeCurso) {
-  return { id, nome, email, curso, matricula, unidadeCurso };
-}
-
-const dadosListaUsuario = [
-  listaUsuario(
-    1,
-    "Luiz Gustavo",
-    "luizgustavo-fl@hotmail.com",
-    "SI",
-    "123456789",
-    "Silva Lobo"
-  ),
-  listaUsuario(
-    2,
-    "Gustavo",
-    "gustavo-fl@hotmail.com",
-    "ADS",
-    "9998547",
-    "Silva Lobo"
-  ),
-  listaUsuario(
-    3,
-    "Luiz",
-    "luiz-fl@hotmail.com",
-    "DIREITO",
-    "114455895",
-    "Silva Lobo"
-  ),
-  listaUsuario(
-    4,
-    "Bob",
-    "bob@hotmail.com",
-    "FARMACIA",
-    "111222333",
-    "Carlos Luz"
-  ),
-  listaUsuario(
-    5,
-    "Frederico",
-    "frederico@hotmail.com",
-    "ENG. CIVIL",
-    "000000000",
-    "Buritis"
-  ),
-];
-
+const axios = require("axios");
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -145,10 +98,20 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ConsultaUsuarioPages() {
   const classes = useStyles();
+  const [listaUsuarios, setlistaUsuarios] = useState([]);
+  const shouldFetchUserData= false;
+  useEffect(() => {
+     async function getDataUsuario(){//setando a função
+      await axios.get("http://localhost:3001/usuario").then((result) => { //fazendo a req
+        console.log(result.data)
+        setlistaUsuarios(result.data) //setando o hook 
+    }).catch(error=>{
+      console.log(error)
+    });
+    };
+     getDataUsuario(); //chamando a função
+  },[shouldFetchUserData]);
 
-  {
-    /** Relacionado a Paginação */
-  }
   const [page, setPage] = React.useState(2);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -281,7 +244,7 @@ export default function ConsultaUsuarioPages() {
                   </TableRow>
                 </TableHead>
                 <TableBody className={"MuiTableCell-body"}>
-                  {dadosListaUsuario.map((linha) => (
+                  {listaUsuarios.map((linha) => (
                     <TableRow
                       key={linha.id}
                       selected={linha.id === id}
