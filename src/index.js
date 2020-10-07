@@ -4,12 +4,18 @@ import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import MainPage from "./pages/Main-Page";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+<<<<<<< HEAD
 import CadastroPage from './pages/Cadastro-page';
 import ConsultaUsuarioPages from './pages/ConsultaUsuarioPages';
 import NovoCurso from './pages/NovoCurso';
 import EditarCurso from './pages/EditarCurso';
 import PesquisarCurso from './pages/PesquisarCurso';
 import CronogramaPage from './pages/Cronograma-page'
+=======
+import CadastroPage from './pages/Cadastro-page'
+import ConsultaUsuarioPages from './pages/ConsultaUsuarioPages'
+import CadastroUsuarioPages from './pages/CadastroUsuarioPages'
+>>>>>>> origin/marlonhqm
 
 ReactDOM.render(
   <React.StrictMode>
@@ -20,6 +26,9 @@ ReactDOM.render(
         </Route>
         <Route path="/criarconta">
           <CadastroPage />
+        </Route>
+        <Route path="/cadastraUsuario">
+          <CadastroUsuarioPages />
         </Route>
         <Route path="/consultaUsuario">
           <ConsultaUsuarioPages />
