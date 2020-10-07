@@ -4,7 +4,6 @@ import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import MainPage from "./pages/Main-Page";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-<<<<<<< HEAD
 import CadastroPage from './pages/Cadastro-page';
 import ConsultaUsuarioPages from './pages/ConsultaUsuarioPages';
 import NovoCurso from './pages/NovoCurso';
