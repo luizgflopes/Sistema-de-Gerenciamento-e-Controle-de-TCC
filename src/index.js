@@ -14,7 +14,6 @@ import CronogramaPage from './pages/Cronograma-page'
 
 import CadastroUsuarioPages from './pages/CadastroUsuarioPages'
 
-
 ReactDOM.render(
   <React.StrictMode>
     <Router>
