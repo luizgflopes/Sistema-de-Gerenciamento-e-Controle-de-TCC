@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
-import MainPage from "./pages/Main-Page";
+import MainPage from "./pages/MainPage";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import CadastroUsuario from './pages/CadastroUsuarioPages';
 import ConsultaUsuarioPages from './pages/ConsultaUsuarioPages';
