@@ -106,20 +106,15 @@ export default function ConsultaUsuarioPages() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     console.log("came first use efect");
-    axios
-      .get(
-        "http://localhost:3001/usuario"
-      )
-      .then(function (response) {
-      
-        console.log(response);
+    axios.get("http://localhost:3001/usuario").then(function (response) {
+      setListaUsuario(response.data)
       })
       .catch(function (error) {
       })
       .then(function () {
       });
 
-  });
+  }, []);
 
   const [page, setPage] = React.useState(2);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -146,6 +141,10 @@ export default function ConsultaUsuarioPages() {
     hostHistory.push("/criarconta");
   };
 
+  const deletarUsuario = usuarioID =>{
+    axios.delete(`http://localhost:3001/usuario/id=${usuarioID}`)
+
+  }
   return (
     <Container maxWidth="lg" className={classes.containerC}>
       <Container component="div">
@@ -219,6 +218,9 @@ export default function ConsultaUsuarioPages() {
                 style={{ backgroundColor: "red", color: "white" }}
                 className={classes.botoes}
                 startIcon={<DeleteIcon />}
+                onClick={() => {
+                  deletarUsuario(id);
+                }}
               >
                 Excluir
               </Button>
@@ -264,19 +266,19 @@ export default function ConsultaUsuarioPages() {
                         scope="row"
                         className={"MuiTableCell-alignCenter"}
                       >
-                        {linha.nome}
+                        {linha.id}
                       </TableCell>
                       <TableCell className={"MuiTableCell-alignCenter"}>
                         {linha.email}
                       </TableCell>
                       <TableCell className={"MuiTableCell-alignCenter"}>
-                        {linha.curso}
+                        {linha.nomCurso}
                       </TableCell>
                       <TableCell className={"MuiTableCell-alignCenter"}>
                         {linha.matricula}
                       </TableCell>
                       <TableCell className={"MuiTableCell-alignCenter"}>
-                        {linha.unidadeCurso}
+                        {linha.telefone}
                       </TableCell>
                     </TableRow>
                   ))}
