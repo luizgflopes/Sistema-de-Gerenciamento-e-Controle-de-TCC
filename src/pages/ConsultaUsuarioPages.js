@@ -104,19 +104,16 @@ export default function ConsultaUsuarioPages() {
   const classes = useStyles();
   const [listaUsuario, setListaUsuario] = useState([]);
 
-  let deveAtualizar = true;
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     axios.get("http://localhost:3001/usuario").then(function (response) {
       setListaUsuario(response.data)
-      deveAtualizar=false;
       })
       .catch(function (error) {
-        deveAtualizar=false;
       });
 
-  }, [deveAtualizar]);
+  }, []);
 
   const [page, setPage] = React.useState(2);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -143,13 +140,13 @@ export default function ConsultaUsuarioPages() {
     hostHistory.push("/criarconta");
   };
 
-  const deletarUsuario = usuarioID =>{
-    axios.delete(`http://localhost:3001/usuario/${usuarioID}`).then((sucess)=>{
+  const deletarUsuario = () =>{
+    axios.delete(`http://localhost:3001/usuario/${id}`).then((sucess)=>{
         if(sucess){
       //    let index =listaUsuario.findIndex(x => x.id === usuarioID) 
           //console.log("Excluido!! ----",index)
+          setListaUsuario(listaUsuario.filter((e)=>(e.id !== id)))
 
-          deveAtualizar=true;
         }
       }
     );
@@ -229,7 +226,7 @@ export default function ConsultaUsuarioPages() {
                 className={classes.botoes}
                 startIcon={<DeleteIcon />}
                 onClick={() => {
-                  deletarUsuario(id);
+                  deletarUsuario();
                 }}
               >
                 Excluir
