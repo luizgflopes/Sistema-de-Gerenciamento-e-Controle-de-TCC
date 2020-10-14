@@ -2,9 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
-import MainPage from "./pages/Main-Page";
+import MainPage from "./pages/MainPage";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import CadastroPage from './pages/Cadastro-page';
+import CadastroUsuario from './pages/CadastroUsuarioPages';
 import ConsultaUsuarioPages from './pages/ConsultaUsuarioPages';
 import NovoCurso from './pages/NovoCurso';
 import EditarCurso from './pages/EditarCurso';
@@ -19,7 +19,7 @@ ReactDOM.render(
           <MainPage />
         </Route>
         <Route path="/criarconta">
-          <CadastroPage />
+          <CadastroUsuario />
         </Route>
         <Route path="/consultaUsuario">
           <ConsultaUsuarioPages />
