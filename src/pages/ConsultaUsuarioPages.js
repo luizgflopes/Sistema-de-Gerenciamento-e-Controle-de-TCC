@@ -19,6 +19,7 @@ import { useHistory } from "react-router-dom";
 
 const axios = require('axios')
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -103,18 +104,19 @@ export default function ConsultaUsuarioPages() {
   const classes = useStyles();
   const [listaUsuario, setListaUsuario] = useState([]);
 
+  let deveAtualizar = true;
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    console.log("came first use efect");
     axios.get("http://localhost:3001/usuario").then(function (response) {
       setListaUsuario(response.data)
+      deveAtualizar=false;
       })
       .catch(function (error) {
-      })
-      .then(function () {
+        deveAtualizar=false;
       });
 
-  }, []);
+  }, [deveAtualizar]);
 
   const [page, setPage] = React.useState(2);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -142,8 +144,17 @@ export default function ConsultaUsuarioPages() {
   };
 
   const deletarUsuario = usuarioID =>{
-    axios.delete(`http://localhost:3001/usuario/id=${usuarioID}`)
+    axios.delete(`http://localhost:3001/usuario/${usuarioID}`).then((sucess)=>{
+        if(sucess){
+      //    let index =listaUsuario.findIndex(x => x.id === usuarioID) 
+          //console.log("Excluido!! ----",index)
 
+          deveAtualizar=true;
+        }
+      }
+    );
+    
+    
   }
   return (
     <Container maxWidth="lg" className={classes.containerC}>
@@ -207,7 +218,6 @@ export default function ConsultaUsuarioPages() {
                 color="primary"
                 className={classes.botoes}
                 startIcon={<Icon>search</Icon>}
-                label="essd"
               >
                 Pesquisar
               </Button>
