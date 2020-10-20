@@ -133,10 +133,7 @@ export default function ConsultaUsuarioPages() {
 
   const [id, setId] = React.useState(0);
 
-<<<<<<< HEAD
-=======
     /** Relacionado a Selecao da Lista de Usuário*/
->>>>>>> a410972d1abdad1a8c7c48689ab56f35b09f9da6
 
   const activeRow = (event, linha) => {
     event.preventDefault();
