@@ -279,7 +279,7 @@ export default function ConsultaUsuarioPages() {
                         scope="row"
                         className={"MuiTableCell-alignCenter"}
                       >
-                        {linha.id}
+                        {linha.nome}
                       </TableCell>
                       <TableCell className={"MuiTableCell-alignCenter"}>
                         {linha.email}
