@@ -11,7 +11,6 @@ import EditarCurso from './pages/EditarCurso';
 import PesquisarCurso from './pages/PesquisarCurso';
 import CronogramaPage from './pages/Cronograma-page';
 import CadastroUsuarioPages from './pages/CadastroUsuarioPages';
-import Menu from './pages/Menu';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -43,9 +42,6 @@ ReactDOM.render(
         </Route>
         <Route path="/PesquisarCurso">
           <PesquisarCurso />
-        </Route>
-        <Route path="/Menu">
-          <Menu />
         </Route>
         <Route path="/home">
         </Route>

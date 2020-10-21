@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import Container from "@material-ui/core/Container";
 import { makeStyles, Grid, TablePagination } from "@material-ui/core/";
 import TextField from "@material-ui/core/TextField";
@@ -16,6 +16,7 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import Tooltip from "@material-ui/core/Tooltip";
 import { useHistory } from "react-router-dom";
+import Menu from '../component/Menu';
 
 function listaCurso(codCurso, nomeCurso) {
   return { codCurso, nomeCurso };
@@ -167,6 +168,7 @@ export default function PesquisarCurso() {
   return (
     <Container maxWidth="lg" className={classes.containerC}>
       <Container component='div'>
+        <Menu />
         <Paper elevation={3}>
           <div className={classes.titulo}>
             <Hidden xsDown>
