@@ -2,25 +2,36 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
-import MainPage from "./pages/Main-Page";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import MainPage from "./pages/Main-Page";
+import CadastroPage from './pages/Cadastro-page'
 import NovoCurso from './pages/NovoCurso';
 import EditarCurso from './pages/EditarCurso';
 import PesquisarCurso from './pages/PesquisarCurso';
 import CronogramaPage from './pages/Cronograma-page'
-import CadastroPage from './pages/Cadastro-page'
-import ConsultaUsuarioPages from './pages/ConsultaUsuarioPages'
-import CadastroUsuarioPages from './pages/CadastroUsuarioPages'
+import ConsultaUsuario from './pages/ConsultaUsuarioPages'
+import cadastraUsuario from './pages/CadastroUsuarioPages'
+import Menu from './components/Menu'
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
+      <Menu />
       <Switch>
-        <Route exact path="/">
+        <Route path='/cadastraUsuario'  component={cadastraUsuario} />
+        <Route path='/ConsultaUsuario' component={ConsultaUsuario} />
+        <Route path='/NovoCurso' component={NovoCurso} />
+        <Route path='/EditarCurso' component={EditarCurso} />
+        <Route path='/PesquisarCurso' component={PesquisarCurso} />
+        <Route path='/CronogramaPage' component={CronogramaPage} />
+{/*     <Route exact path="/">
           <MainPage />
         </Route>
         <Route path="/criarconta">
           <CadastroPage />
+        </Route>
+        <Route path="/menu">
+          <Menu />
         </Route>
         <Route path="/cadastraUsuario">
           <CadastroUsuarioPages />
@@ -44,7 +55,7 @@ ReactDOM.render(
           <PesquisarCurso />
         </Route>
         <Route path="/home">
-        </Route>
+        </Route> */}
       </Switch>
     </Router>
   </React.StrictMode>,
