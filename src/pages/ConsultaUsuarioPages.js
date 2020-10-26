@@ -115,11 +115,6 @@ export default function ConsultaUsuarioPages() {
 
   }, []);
 
-<<<<<<< HEAD
-=======
-    /** Relacionado a Paginação */
-  
->>>>>>> a410972d1abdad1a8c7c48689ab56f35b09f9da6
   const [page, setPage] = React.useState(2);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
