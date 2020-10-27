@@ -24,6 +24,13 @@ ReactDOM.render(
         <Route path='/EditarCurso' component={EditarCurso} />
         <Route path='/PesquisarCurso' component={PesquisarCurso} />
         <Route path='/CronogramaPage' component={CronogramaPage} />
+        <Route exact path="/home">
+          <MainPage />
+        </Route>
+        <Route path="/criarconta">
+          <CadastroPage />
+        </Route>
+
 {/*     <Route exact path="/">
           <MainPage />
         </Route>
