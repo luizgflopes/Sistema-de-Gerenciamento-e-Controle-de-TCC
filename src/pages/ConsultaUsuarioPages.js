@@ -144,10 +144,7 @@ export default function ConsultaUsuarioPages() {
   const deletarUsuario = () =>{
     axios.delete(`http://localhost:3001/usuario/${id}`).then((sucess)=>{
         if(sucess){
-      //    let index =listaUsuario.findIndex(x => x.id === usuarioID) 
-          //console.log("Excluido!! ----",index)
           setListaUsuario(listaUsuario.filter((e)=>(e.id !== id)))
-
         }
       }
     );

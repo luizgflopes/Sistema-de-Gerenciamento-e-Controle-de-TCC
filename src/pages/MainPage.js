@@ -37,8 +37,7 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(10),
   },
 }));
-
-export default function MainPage() {
+export default function () {
   const classes = useStyles();
   let history = useHistory();
 

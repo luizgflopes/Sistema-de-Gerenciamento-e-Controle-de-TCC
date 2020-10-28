@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
@@ -9,37 +9,10 @@ import logo from "../images/iconetcc.png";
 import Container from "@material-ui/core/Container";
 import { useHistory, Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
-
 import MenuItem from "@material-ui/core/MenuItem";
-import DefaultLayoutComponent from "../component/DefaultLayoutComponent";
-const semestres = [
-  {
-    value: "1°",
-  },
-  {
-    value: "2°",
-  },
-  {
-    value: "3°",
-  },
-  {
-    value: "4°",
-  },
-];
-const cursos = [
-  {
-    value: "Sistemas de informação",
-  },
-  {
-    value: "Odontologia",
-  },
-  {
-    value: "Administração",
-  },
-  {
-    value: "Curso da Vasp",
-  },
-];
+import DefaultLayoutComponent from "../components/DefaultLayoutComponent";
+import { getCursos } from "../services/cursoService";
+const axios = require("axios");
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -69,26 +42,46 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const useStylesButton = makeStyles((theme) => ({
-    root: {
-      '& > *': {
-        margin: theme.spacing(1),
-      },
+  root: {
+    "& > *": {
+      margin: theme.spacing(1),
     },
-  }));
-  
+  },
+}));
+
 export default function CronogramaPage() {
   const classes = useStyles();
-  const [curso, setCurso] = React.useState(cursos[0].value);
-  const [semestre, setSemestre] = React.useState(semestres[0].value);
-  const [selectedData, setSelectedData] = React.useState(new Date());
-  const [selectedDataFinal, setSelectedDataFinal] = React.useState(new Date());
+  const [Formulario, setFormulario] = useState({
+    dtaInicio: new Date().toISOString().slice(0, 10),
+    dtaFim: new Date().toISOString().slice(0, 10),
+    desSemestre: 1,
+    codCursoFaseTcc: 1,
+  });
   const buttonStyle = useStylesButton();
+  const [listaCursos, setlistaCursos] = useState([]);
+  useEffect(() => {
+    const getCursos = async () => {
+      await axios
+        .get("http://localhost:3001/curso")
+        .then(function (response) {
+          setlistaCursos(response.data);
+          console.log(response);
+        })
+        .catch(function (error) {});
+    };
+    
 
-  const handleChange = (event) => {
-    setCurso(event.target.value);
+    getCursos();
+  }, []);
+
+  const updateForm = (e) => {
+    setFormulario({
+      ...Formulario,
+      [e.target.name]: e.target.value,
+    });
+    console.log("Formulario", Formulario);
   };
   return (
-    <Container maxWidth="xl">
       <DefaultLayoutComponent title="Cronograma">
         <form className={classes.root} noValidate autoComplete="off">
           <Grid container spacing={3}>
@@ -101,36 +94,37 @@ export default function CronogramaPage() {
                   id="curso"
                   select
                   label="Selecione o curso"
-                  value={curso}
-                  onChange={handleChange}
+                  value={Formulario.codCursoFaseTcc}
+                  name="codCursoFaseTcc"
+                  onChange={updateForm}
                   size="medium"
+                  name="codCursoFaseTcc"
                   variant="filled"
                   helperText="Por favor selecione um curso"
                 >
-                  {cursos.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.value}
+                  {listaCursos.map((option) => (
+                    <MenuItem key={option.id} value={option.id}>
+                      {option.nomcurso}
                     </MenuItem>
                   ))}
                 </TextField>
                 <TextField
                   id="semestre"
-                  select
                   label="Selecione o semestre"
-                  value={semestre}
-                  onChange={(event) => {
-                    event.preventDefault();
-                    setSemestre(event.target.value);
-                  }}
+                  name="desSemestre"
+                  value={Formulario.desSemestre}
+                  onChange={updateForm}
                   size="medium"
+                  select
                   variant="filled"
                   helperText="Por favor selecione um semestre"
                 >
-                  {semestres.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.value}
-                    </MenuItem>
-                  ))}
+                  <MenuItem key={"1"} value={1}>
+                    {"1°"}
+                  </MenuItem>
+                  <MenuItem key={"2"} value={2}>
+                    {"2°"}
+                  </MenuItem>
                 </TextField>
               </div>
             </Grid>
@@ -140,12 +134,12 @@ export default function CronogramaPage() {
                   id="date"
                   label="Data Inicio"
                   type="date"
-                  defaultValue="2017-05-24"
+                  name="dtaInicio"
+                  defaultValue={Formulario.dtaInicio}
                   className={classes.textField}
-                  value={selectedData}
+                  value={Formulario.dtaInicio}
                   onChange={(event) => {
-                    event.preventDefault();
-                    setSelectedData(event.target.value);
+                    updateForm(event);
                   }}
                   InputLabelProps={{
                     shrink: true,
@@ -155,12 +149,12 @@ export default function CronogramaPage() {
                   id="date"
                   label="Data Fim"
                   type="date"
-                  defaultValue="2017-05-24"
+                  name="dtaFim"
+                  defaultValue={Formulario.dtaFim}
                   className={classes.textField}
-                  value={selectedDataFinal}
+                  value={Formulario.dtaFim}
                   onChange={(event) => {
-                    event.preventDefault();
-                    setSelectedDataFinal(event.target.value);
+                    updateForm(event);
                   }}
                   InputLabelProps={{
                     shrink: true,
@@ -169,24 +163,22 @@ export default function CronogramaPage() {
               </div>
             </Grid>
             <Grid
-  container
-  direction="row"
-  justify="flex-end"
-  alignItems="flex-end"
->              <div className={buttonStyle.root}>
-              <Button variant="contained" color="secondary">
-                Excluir
-              </Button>
-              <Button variant="contained">Alterar</Button>
-
-              <Button variant="contained" color="primary">
-                Adicionar
-              </Button>
+              container
+              direction="row"
+              justify="flex-end"
+              alignItems="center"
+              xs={11}
+            >
+              {" "}
+              <div className={buttonStyle.root}>
+                
+                <Button variant="contained" color="primary">
+                  Adicionar
+                </Button>
               </div>
             </Grid>
           </Grid>
         </form>
       </DefaultLayoutComponent>
-    </Container>
   );
 }
