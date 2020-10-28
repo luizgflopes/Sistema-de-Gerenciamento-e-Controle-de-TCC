@@ -24,12 +24,6 @@ export const MenuDataCurso =[
     cName: 'nav-text'
   },
   {
-    title: 'Editar Curso',
-    path: '/EditarCurso',
-    icon: <Icon.Edit/>,
-    cName: 'nav-text'
-  },
-  {
     title: 'Consultar Curso',
     path: '/PesquisarCurso',
     icon: <Icon.Search/>,

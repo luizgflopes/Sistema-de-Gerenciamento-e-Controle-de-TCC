@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -127,6 +127,8 @@ export default function MiniDrawer() {
     setOpenSchool(!openSchool);
   };
 
+  const history = useHistory()
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -188,7 +190,12 @@ export default function MiniDrawer() {
                     <Link to={item.path}>
                       <ListItemIcon>{item.icon} </ListItemIcon>
                     </Link>
-                    <ListItemText primary={item.title} />
+                    <ListItemText 
+                      primary={item.title}
+                      onClick = {() => {
+                        history.push(item.path)
+                      }}
+                    />
                   </ListItem>
                 )
               })}
@@ -210,7 +217,12 @@ export default function MiniDrawer() {
                     <Link to={item.path}>
                       <ListItemIcon>{item.icon} </ListItemIcon>
                     </Link>
-                    <ListItemText primary={item.title}/>
+                    <ListItemText
+                      primary={item.title}
+                      onClick = {() => {
+                        history.push(item.path)
+                      }}
+                    />
                   </ListItem>
                 )
               })}

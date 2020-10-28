@@ -1,7 +1,6 @@
 import React from 'react';
+import {useHistory} from 'react-router-dom'
 import Container from '@material-ui/core/Container';
-import Avatar from "@material-ui/core/Avatar";
-import AssignmentIcon from '@material-ui/icons/Assignment';
 import { makeStyles, Grid, TablePagination } from "@material-ui/core/";
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
@@ -94,6 +93,9 @@ export default function PesquisarCurso() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  const history = useHistory();
+
   return (
     <Container maxWidth="lg" className={classes.containerC}>
       <Container component='div'>
@@ -127,6 +129,9 @@ export default function PesquisarCurso() {
               style={{ backgroundColor: 'green', color: 'white' }}
               className={classes.botoes}
               startIcon={<Icon>edit</Icon>}
+              onClick = {()=>{
+                history.push("/EditarCurso")
+              }}
             >
               Editar
             </Button>
