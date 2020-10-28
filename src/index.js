@@ -9,7 +9,8 @@ import ConsultaUsuarioPages from './pages/ConsultaUsuarioPages';
 import NovoCurso from './pages/NovoCurso';
 import EditarCurso from './pages/EditarCurso';
 import PesquisarCurso from './pages/PesquisarCurso';
-import CronogramaPage from './pages/Cronograma-page'
+import CronogramaPage from './pages/Cronograma-page';
+import CadastrarTcc from './pages/CadastrarTcc';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -40,6 +41,9 @@ ReactDOM.render(
           <PesquisarCurso />
         </Route>
         <Route path="/home">
+        </Route>
+        <Route path="/CadastrarTcc">
+          <CadastrarTcc/>
         </Route>
       </Switch>
     </Router>
