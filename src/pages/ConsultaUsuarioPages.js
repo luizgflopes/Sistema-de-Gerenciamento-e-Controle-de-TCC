@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Container from "@material-ui/core/Container";
 import { makeStyles, Grid, TablePagination } from "@material-ui/core/";
 import TextField from "@material-ui/core/TextField";
@@ -17,52 +17,8 @@ import TableBody from "@material-ui/core/TableBody";
 import Tooltip from "@material-ui/core/Tooltip";
 import { useHistory } from "react-router-dom";
 
-function listaUsuario(id, nome, email, curso, matricula, unidadeCurso) {
-  return { id, nome, email, curso, matricula, unidadeCurso };
-}
+const axios = require('axios')
 
-const dadosListaUsuario = [
-  listaUsuario(
-    1,
-    "Luiz Gustavo",
-    "luizgustavo-fl@hotmail.com",
-    "SI",
-    "123456789",
-    "Silva Lobo"
-  ),
-  listaUsuario(
-    2,
-    "Gustavo",
-    "gustavo-fl@hotmail.com",
-    "ADS",
-    "9998547",
-    "Silva Lobo"
-  ),
-  listaUsuario(
-    3,
-    "Luiz",
-    "luiz-fl@hotmail.com",
-    "DIREITO",
-    "114455895",
-    "Silva Lobo"
-  ),
-  listaUsuario(
-    4,
-    "Bob",
-    "bob@hotmail.com",
-    "FARMACIA",
-    "111222333",
-    "Carlos Luz"
-  ),
-  listaUsuario(
-    5,
-    "Frederico",
-    "frederico@hotmail.com",
-    "ENG. CIVIL",
-    "000000000",
-    "Buritis"
-  ),
-];
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -143,11 +99,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 export default function ConsultaUsuarioPages() {
   const classes = useStyles();
+  const [listaUsuario, setListaUsuario] = useState([]);
 
-    /** Relacionado a Paginação */
-  
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    axios.get("http://localhost:3001/usuario").then(function (response) {
+      setListaUsuario(response.data)
+      })
+      .catch(function (error) {
+      });
+
+  }, []);
+
   const [page, setPage] = React.useState(2);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -174,6 +141,16 @@ export default function ConsultaUsuarioPages() {
     hostHistory.push("/criarconta");
   };
 
+  const deletarUsuario = () =>{
+    axios.delete(`http://localhost:3001/usuario/${id}`).then((sucess)=>{
+        if(sucess){
+          setListaUsuario(listaUsuario.filter((e)=>(e.id !== id)))
+        }
+      }
+    );
+    
+    
+  }
   return (
     <Container maxWidth="lg" className={classes.containerC}>
       <Container component="div">
@@ -236,7 +213,6 @@ export default function ConsultaUsuarioPages() {
                 color="primary"
                 className={classes.botoes}
                 startIcon={<Icon>search</Icon>}
-                label="essd"
               >
                 Pesquisar
               </Button>
@@ -247,6 +223,9 @@ export default function ConsultaUsuarioPages() {
                 style={{ backgroundColor: "red", color: "white" }}
                 className={classes.botoes}
                 startIcon={<DeleteIcon />}
+                onClick={() => {
+                  deletarUsuario();
+                }}
               >
                 Excluir
               </Button>
@@ -279,7 +258,7 @@ export default function ConsultaUsuarioPages() {
                   </TableRow>
                 </TableHead>
                 <TableBody className={"MuiTableCell-body"}>
-                  {dadosListaUsuario.map((linha) => (
+                  {listaUsuario.map((linha) => (
                     <TableRow
                       key={linha.id}
                       selected={linha.id === id}
@@ -298,13 +277,13 @@ export default function ConsultaUsuarioPages() {
                         {linha.email}
                       </TableCell>
                       <TableCell className={"MuiTableCell-alignCenter"}>
-                        {linha.curso}
+                        {linha.nomCurso}
                       </TableCell>
                       <TableCell className={"MuiTableCell-alignCenter"}>
                         {linha.matricula}
                       </TableCell>
                       <TableCell className={"MuiTableCell-alignCenter"}>
-                        {linha.unidadeCurso}
+                        {linha.telefone}
                       </TableCell>
                     </TableRow>
                   ))}

@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
-import MainPage from "./pages/Main-Page";
+import MainPage from "./pages/MainPage";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import CadastroPage from './pages/Cadastro-page';
 import ConsultaUsuarioPages from './pages/ConsultaUsuarioPages';
@@ -10,7 +10,7 @@ import NovoCurso from './pages/NovoCurso';
 import EditarCurso from './pages/EditarCurso';
 import PesquisarCurso from './pages/PesquisarCurso';
 import CronogramaPage from './pages/Cronograma-page';
-import CadastroUsuarioPages from './pages/CadastroUsuarioPages';
+import CadastroUsuarioPage from './pages/CadastroUsuarioPages';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -20,10 +20,7 @@ ReactDOM.render(
           <MainPage />
         </Route>
         <Route path="/criarconta">
-          <CadastroPage />
-        </Route>
-        <Route path="/cadastraUsuario">
-          <CadastroUsuarioPages />
+          <CadastroUsuarioPage />
         </Route>
         <Route path="/consultaUsuario">
           <ConsultaUsuarioPages />
@@ -45,6 +42,9 @@ ReactDOM.render(
         </Route>
         <Route path="/home">
         </Route>
+        {/* <Route path="/CadastrarTcc">
+          <CadastrarTcc/>
+        </Route> */}
       </Switch>
     </Router>
   </React.StrictMode>,

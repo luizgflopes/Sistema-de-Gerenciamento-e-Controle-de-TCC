@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
   container: {
     paddingTop: "2%",
   },
+  
   paper: {
     padding: theme.spacing(1),
     textAlign: "center",
@@ -38,14 +39,18 @@ export default function DefaultLayoutComponent({ title, children }) {
   const classes = useStyles();
   return (
     <div className={classes.container}>
-      <Grid container spacing={3}>
+      <Grid container direction="column" justify="center" alignItems="center">
         <Grid item xs={12}>
-        <Typography style={{textAlign: "center"}} variant="h2" component="h2">
-          {title}
-        </Typography>
-                </Grid>
+          <Typography
+            style={{ textAlign: "center" }}
+            variant="h2"
+            component="h2"
+          >
+            {title}
+          </Typography>
+        </Grid>
         <Grid item xs={12}>
-            {children}
+          {children}
         </Grid>
       </Grid>
     </div>
