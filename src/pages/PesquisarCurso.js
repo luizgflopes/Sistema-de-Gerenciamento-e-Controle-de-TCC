@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '60px'
   },
   containerInput: {
-    paddingLeft: '15%',
+    paddingLeft: '30%',
     marginTop: '20px'
   },
   titulo: {
@@ -182,7 +182,6 @@ export default function PesquisarCurso() {
           </div>
           <Container component='div' className={classes.containerInput}>
             <form className={classes.root} noValidate autoComplete="on">
-              <TextField id="codCurso" label="Código do curso" variant="outlined" spacing="5" />
               <TextField id="nomeCurso" label="Nome do curso" variant="outlined" />
             </form>
           </Container>

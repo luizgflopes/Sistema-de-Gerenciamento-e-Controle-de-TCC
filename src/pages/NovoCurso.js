@@ -71,19 +71,6 @@ const cancelButtonClick = () => {
         </Typography>
         <form className={classes.formulario} >
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                value={formulario.codigocurso}
-                error={!/^[a-zA-Z]*$/.test(formulario.codigocurso)}
-                autoComplete="fname"
-                name="codigocurso"
-                variant="outlined"
-                disabled
-                fullWidth
-                id="codigocurso"
-                label="Código do curso"
-              />
-            </Grid>
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
