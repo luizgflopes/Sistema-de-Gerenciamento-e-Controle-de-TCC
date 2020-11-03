@@ -1,5 +1,6 @@
 import React from 'react';
-import Container from "@material-ui/core/Container";
+import {useHistory} from 'react-router-dom'
+import Container from '@material-ui/core/Container';
 import { makeStyles, Grid, TablePagination } from "@material-ui/core/";
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
@@ -15,7 +16,6 @@ import TableRow from "@material-ui/core/TableRow";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import Tooltip from "@material-ui/core/Tooltip";
-import { useHistory } from "react-router-dom";
 import Menu from '../components/Menu';
 
 function listaCurso(codCurso, nomeCurso) {
@@ -135,7 +135,7 @@ const useStyles = makeStyles((theme) => ({
 export default function PesquisarCurso() {
   const classes = useStyles();
 
-  {/** Relacionado a Paginação */ }
+  /** Relacionado a Paginação */ 
   const [page, setPage] = React.useState(2);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
