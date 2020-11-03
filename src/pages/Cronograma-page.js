@@ -21,6 +21,12 @@ const useStyles = makeStyles((theme) => ({
       width: "45%",
     },
   },
+  mainroot: {
+    display: "flex",
+    width: "100%",
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
+  },
   configuracaopagina: {
     marginTop: theme.spacing(8),
     display: "flex",
@@ -69,7 +75,6 @@ export default function CronogramaPage() {
         })
         .catch(function (error) {});
     };
-    
 
     getCursos();
   }, []);
@@ -82,6 +87,8 @@ export default function CronogramaPage() {
     console.log("Formulario", Formulario);
   };
   return (
+    <div>
+      <CssBaseline />
       <DefaultLayoutComponent title="Cronograma">
         <form className={classes.root} noValidate autoComplete="off">
           <Grid container spacing={3}>
@@ -171,7 +178,6 @@ export default function CronogramaPage() {
             >
               {" "}
               <div className={buttonStyle.root}>
-                
                 <Button variant="contained" color="primary">
                   Adicionar
                 </Button>
@@ -180,5 +186,7 @@ export default function CronogramaPage() {
           </Grid>
         </form>
       </DefaultLayoutComponent>
+    </div>
   );
 }
+

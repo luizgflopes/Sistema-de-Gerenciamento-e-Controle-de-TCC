@@ -16,7 +16,7 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import Tooltip from "@material-ui/core/Tooltip";
 import { useHistory } from "react-router-dom";
-import Menu from '../component/Menu';
+import Menu from '../components/Menu';
 
 function listaCurso(codCurso, nomeCurso) {
   return { codCurso, nomeCurso };

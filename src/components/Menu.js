@@ -1,5 +1,6 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
+import {Link} from 'react-router-dom';
+import IconButton from '@material-ui/core/IconButton';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -9,24 +10,23 @@ import List from '@material-ui/core/List';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
+import * as Icon from '@material-ui/icons';
+import Collapse from '@material-ui/core/Collapse';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import {MenuDataCurso, MenuDataUser, MenuDataCronograma} from './MenuData';
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -100,13 +100,17 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(12) - 70
       },
   },
+  nested: {
+    paddingLeft: theme.spacing(4),
+  },
 }));
 
 export default function MiniDrawer() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [openMenu, setOpenMenu] = React.useState(true)
+  const [openSchool, setOpenSchool] = React.useState(true)
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -116,12 +120,11 @@ export default function MiniDrawer() {
     setOpen(false);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleUserClose = () => {
+    setOpenMenu(!openMenu);
   };
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleSchoolClose = () => {
+    setOpenSchool(!openSchool);
   };
 
   return (
@@ -143,31 +146,11 @@ export default function MiniDrawer() {
               [classes.hide]: open,
             })}
           >
-            <MenuIcon />
+            <Icon.Menu />
           </IconButton>
           <Typography variant="h6" noWrap>
-            SGCT
+            TCC
           </Typography>
-            {/**Inicio do menu de login e logout*/}
-            <div>
-                <Button className={classes.profileIcon} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-                <AccountCircle />
-                    Perfil
-                </Button>
-                <Menu
-                    className={classes.profileMenu}
-                    id="simple-menu"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
-                >
-                <MenuItem onClick={handleClose}>Teste</MenuItem>
-                <MenuItem onClick={handleClose}>Teste</MenuItem>
-                <MenuItem onClick={handleClose}>Sair</MenuItem>
-                </Menu>
-            </div>
-            {/**Fim do menu de login e logout*/}
         </Toolbar>
       </AppBar>
       <Drawer
@@ -185,34 +168,67 @@ export default function MiniDrawer() {
       >
         <div className={classes.toolbar}>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            {theme.direction === 'rtl' ? <Icon.ChevronRight /> : <Icon.ChevronLeft />}
           </IconButton>
         </div>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          <ListItem button onClick={handleUserClose}>
+            <ListItemIcon>
+              <Icon.Person />
+            </ListItemIcon>
+            <ListItemText primary="Usuários" />
+            {openMenu ? <ExpandLess /> : <ExpandMore />}
+          </ListItem>
+          <Collapse in={openMenu} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding> 
+              {MenuDataUser.map((item, index) => {
+                return (
+                  <ListItem button key={index} className = {item.cName}>
+                    <Link to={item.path}>
+                      <ListItemIcon>{item.icon} </ListItemIcon>
+                    </Link>
+                    <ListItemText primary={item.title} />
+                  </ListItem>
+                )
+              })}
+            </List>
+          </Collapse>
+          <Divider />
+          <ListItem button onClick={handleSchoolClose}>
+            <ListItemIcon>
+              <Icon.LibraryBooks />
+            </ListItemIcon>
+            <ListItemText primary="Cursos" />
+            {openSchool ? <ExpandLess /> : <ExpandMore />}
+          </ListItem>
+          <Collapse in={openSchool} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding> 
+              {MenuDataCurso.map((item, index) => {
+                return (
+                  <ListItem button key={index} className = {item.cName}>
+                    <Link to={item.path}>
+                      <ListItemIcon>{item.icon} </ListItemIcon>
+                    </Link>
+                    <ListItemText primary={item.title}/>
+                  </ListItem>
+                )
+              })}
+            </List>
+          </Collapse>
+          <Divider />
+          {MenuDataCronograma.map((item, index) => {
+                return (
+                  <ListItem button key={index} className = {item.cName}>
+                    <Link to={item.path}>
+                      <ListItemIcon>{item.icon} </ListItemIcon>
+                    </Link>
+                    <ListItemText primary={item.title} />
+                  </ListItem>
+                )
+          })}      
         </List>
       </Drawer>
-      {/*
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-      </main>*/}
     </div>
   );
 }
-
-
