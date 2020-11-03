@@ -10,6 +10,8 @@ import PesquisarCurso from './pages/PesquisarCurso';
 import CronogramaPage from './pages/Cronograma-page'
 import ConsultaUsuario from './pages/ConsultaUsuarioPages'
 import cadastraUsuario from './pages/CadastroUsuarioPages'
+import cadastrarTCC from './pages/CadastrarTcc'
+
 import Menu from './components/Menu'
 
 ReactDOM.render(
@@ -23,7 +25,8 @@ ReactDOM.render(
         <Route path='/EditarCurso' component={EditarCurso} />
         <Route path='/PesquisarCurso' component={PesquisarCurso} />
         <Route path='/CronogramaPage' component={CronogramaPage} />
-       
+        <Route path='/cadastrartcc' component={cadastrarTCC} />
+
         <Route path="/criarconta">
           <CadastroPage />
         </Route>

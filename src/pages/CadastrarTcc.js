@@ -8,10 +8,9 @@ import Container from "@material-ui/core/Container";
 import { useHistory, Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import { useState } from "react";
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import Icon from '@material-ui/core/Icon';
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import Icon from "@material-ui/core/Icon";
+import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
 const useStyles = makeStyles((theme) => ({
   configuracaopagina: {
@@ -34,40 +33,42 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     width: theme.spacing(20),
     height: theme.spacing(5),
-    margintop: theme.spacing(20)
+    margintop: theme.spacing(20),
   },
   botaocancelar: {
     margin: theme.spacing(3),
     width: theme.spacing(20),
     height: theme.spacing(5),
-    margintop: theme.spacing(20)
+    margintop: theme.spacing(20),
   },
 }));
 
 export default function CadastrarTcc() {
-  const cursos = ["Sistema de Informação", "Análise e Desenvolvimento de Sistemas", "Ciências da Computação"]
-  const orientador = ["Rafaela", "Iremar", "Ruy", "Tarley", "Mônica"]
-  const aluno = ["Iago", "Bruno", "Izabela", "Inara", "Matheus"]
-  const add = useState({
-    
-  })
+  const cursos = [
+    "Sistema de Informação",
+    "Análise e Desenvolvimento de Sistemas",
+    "Ciências da Computação",
+  ];
+  const orientador = ["Rafaela", "Iremar", "Ruy", "Tarley", "Mônica"];
+  const aluno = ["Iago", "Bruno", "Izabela", "Inara", "Matheus"];
+  const add = useState({});
   const classes = useStyles();
   const [formulario, setformulario] = useState({
     titulo: null,
     tema: null,
     resumo: null,
-    palavraChave: null
+    palavraChave: null,
   });
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <div className={classes.configuracaopagina}>      
+      <div className={classes.configuracaopagina}>
         <Typography component="h1" variant="h5">
           Cadastrar Tcc
         </Typography>
-        <form className={classes.formulario} >
-        <Grid container spacing={1}>
+        <form className={classes.formulario}>
+          <Grid container spacing={1}>
             <Grid item xs={12}>
               <Autocomplete
                 id="curso"
@@ -77,10 +78,17 @@ export default function CadastrarTcc() {
                 fullWidth
                 options={cursos}
                 getOptionLabel={(option) => option}
-                renderInput={(params) => <TextField {...params} label="Curso" variant="outlined" required />}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Curso"
+                    variant="outlined"
+                    required
+                  />
+                )}
               />
             </Grid>
-              
+
             <Grid item xs={10}>
               <Autocomplete
                 id="orientador"
@@ -90,10 +98,17 @@ export default function CadastrarTcc() {
                 fullWidth
                 options={orientador}
                 getOptionLabel={(option) => option}
-                renderInput={(params) => <TextField {...params} label="Orientador" variant="outlined" required />}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Orientador"
+                    variant="outlined"
+                    required
+                  />
+                )}
               />
-            </Grid>  
-            
+            </Grid>
+
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -118,16 +133,17 @@ export default function CadastrarTcc() {
               />
             </Grid>
             <Grid item xs={12}>
-            <TextField
-            className="resumo"
-            value={formulario.resumo}
-          id="filled-multiline-static"
-          label="Resumo"
-          multiline
-          rows={8}
-          color="white"
-          variant="filled"
-        />
+              <TextField
+                className="resumo"
+                value={formulario.resumo}
+                id="filled-multiline-static"
+                label="Resumo"
+                multiline
+                fullWidth
+                rows={8}
+                color="white"
+                variant="filled"
+              />
             </Grid>
 
             <Grid item xs={12}>
@@ -139,47 +155,48 @@ export default function CadastrarTcc() {
                 name="Palavras Chaves"
                 label="Palavras Chaves"
                 type="label"
-                
-                
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-         
               <Autocomplete
-                 id="aluno"
-                 name="Aluno"
-                 autoComplete="Aluno"
-                 value={formulario.aluno}
-                 fullWidth
-                 options={aluno}
-                 getOptionLabel={(option) => option}
-                 renderInput={(params) => <TextField {...params} label="Aluno" variant="outlined" required />}
-               />
-               </Grid>
-               <Grid item xs={12} sm={6}>
-                <Button
-                color = "primary"
-                className={classes.add}
-                                             >
-                    <Icon style={{ fontSize: 30 }}>add_circle</Icon>
-                </Button>
-                </Grid>
+                id="aluno"
+                name="Aluno"
+                autoComplete="Aluno"
+                value={formulario.aluno}
+                fullWidth
+                options={aluno}
+                getOptionLabel={(option) => option}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Aluno"
+                    variant="outlined"
+                    required
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Button color="primary" className={classes.add}>
+                <Icon style={{ fontSize: 30 }}>add_circle</Icon>
+              </Button>
+            </Grid>
           </Grid>
           <Button
-              variant="contained"
-              style={{ backgroundColor: 'red', color: 'white' }}
-              className={classes.botaocancelar}
-              startIcon={<Icon>cancel</Icon>}
-            >
-              Cancelar
-            </Button>
+            variant="contained"
+            style={{ backgroundColor: "red", color: "white" }}
+            className={classes.botaocancelar}
+            startIcon={<Icon>cancel</Icon>}
+          >
+            Cancelar
+          </Button>
           <Button
             type="botaosalvar"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.botaosalvar}
-            >
+          >
             Salvar
           </Button>
         </form>
