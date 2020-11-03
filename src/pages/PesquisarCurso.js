@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
 export default function PesquisarCurso() {
   const classes = useStyles();
 
-  {/** Relacionado a Paginação */ }
+  /** Relacionado a Paginação */ 
   const [page, setPage] = React.useState(2);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 

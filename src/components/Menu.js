@@ -151,7 +151,7 @@ export default function MiniDrawer() {
             <Icon.Menu />
           </IconButton>
           <Typography variant="h6" noWrap>
-            TCC
+            SISTEMA DE GERENCIAMENTO E CONTROLE DE TCC
           </Typography>
         </Toolbar>
       </AppBar>
@@ -235,7 +235,12 @@ export default function MiniDrawer() {
                     <Link to={item.path}>
                       <ListItemIcon>{item.icon} </ListItemIcon>
                     </Link>
-                    <ListItemText primary={item.title} />
+                    <ListItemText 
+                      primary={item.title}
+                      onClick = {() => {
+                        history.push(item.path)
+                      }}
+                    />
                   </ListItem>
                 )
           })}      
