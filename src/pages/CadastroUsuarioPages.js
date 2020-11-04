@@ -2,6 +2,7 @@ import React from "react"
 import api from '../api'
 import Avatar from "@material-ui/core/Avatar"
 import Button from "@material-ui/core/Button"
+import MenuItem from "@material-ui/core/MenuItem"
 import CssBaseline from "@material-ui/core/CssBaseline"
 import TextField from "@material-ui/core/TextField"
 import Autocomplete from '@material-ui/lab/Autocomplete'
@@ -35,11 +36,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const cursos = []
+
 const sexo = ["Masculino", "Feminino", "Outros"]
-const perfil = ["Orientador/Gestor", "Coordenador", "Aluno"]
 
 export default function CadastroUsuario() {
+
   const classes = useStyles()
 
   const [formulario, setformulario] = React.useState({
@@ -53,7 +54,45 @@ export default function CadastroUsuario() {
     senha: '',
   })
 
+  const [listaCursos, setlistaCursos] = React.useState([]);
+  React.useEffect(() => {
+    const getCursos = async () => {
+      await api
+        .get("/curso")
+        .then(function (response) {
+          setlistaCursos(response.data);
+          console.log(response);
+        })
+        .catch(function (error) {});
+    };
+
+    getCursos();
+  }, []);
+
+  const [listaPerfil, setlistaPerfil] = React.useState([]);
+  React.useEffect(() => {
+    const getPerfil = async () => {
+      await api
+        .get("/perfil")
+        .then(function (response) {
+          setlistaPerfil(response.data);
+          console.log(response);
+        })
+        .catch(function (error) {});
+    };
+
+    getPerfil();
+  }, []);
+
+  const cursos = []
+  listaCursos.map((option) => (cursos.push(option.nomcurso)))
+  const perfil = []
+  listaPerfil.map((option) => (perfil.push(option.perfil)))
+  
   const handleChange = (event) => {
+    console.log(event.target, event.target.value, event.target.name);
+    console.log('formulario', formulario);
+    
     const name = event.target.name;
     setformulario({
       ...formulario,
@@ -78,6 +117,7 @@ export default function CadastroUsuario() {
                 id="perfil"
                 name="perfil"
                 autoComplete={true}
+                onChange={handleChange}
                 fullWidth
                 options={perfil}
                 getOptionLabel={(option) => option}
@@ -93,6 +133,7 @@ export default function CadastroUsuario() {
                   variant="outlined"
                   required
                   fullWidth
+                  onChange={handleChange}
                   id="nome"
                   label="Nome "
                   autoFocus
@@ -103,6 +144,7 @@ export default function CadastroUsuario() {
                 variant="outlined"
                 required
                 fullWidth
+                onChange={handleChange}
                 id="matricula"
                 label="Matricula"
                 name="matricula"
@@ -114,6 +156,7 @@ export default function CadastroUsuario() {
                 id="sexo"
                 name="sexo"
                 autoComplete={true}
+                onChange={handleChange}
                 fullWidth
                 options={sexo}
                 getOptionLabel={(option) => option}
@@ -124,8 +167,10 @@ export default function CadastroUsuario() {
               <Autocomplete
                 id="curso"
                 name="curso"
+                /* value={formulario.curso} */
                 autoComplete={true}
                 fullWidth
+                onChange={handleChange}
                 options={cursos}
                 getOptionLabel={(option) => option}
                 renderInput={(params) => <TextField {...params} label="Curso" variant="outlined" required />}
@@ -136,6 +181,7 @@ export default function CadastroUsuario() {
                 variant="outlined"
                 required
                 fullWidth
+                onChange={handleChange}
                 id="phone1"
                 label="Telefone"
                 name="phone1"
@@ -148,6 +194,7 @@ export default function CadastroUsuario() {
                 variant="outlined"
                 required
                 fullWidth
+                onChange={handleChange}
                 id="phone2"
                 label="Celular"
                 name="phone2"
@@ -160,6 +207,7 @@ export default function CadastroUsuario() {
                 variant="outlined"
                 required
                 fullWidth
+                onChange={handleChange}
                 id="email"
                 label="Endereço de email"
                 name="email"
@@ -171,6 +219,7 @@ export default function CadastroUsuario() {
                 variant="outlined"
                 required
                 fullWidth
+                onChange={handleChange}
                 name="senha"
                 label="Senha"
                 type="password"
@@ -183,6 +232,7 @@ export default function CadastroUsuario() {
                 variant="outlined"
                 required
                 fullWidth
+                onChange={handleChange}
                 name="csenha"
                 label="Confirmar senha"
                 type="password"
