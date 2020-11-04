@@ -16,6 +16,9 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import Tooltip from "@material-ui/core/Tooltip";
 import { useHistory } from "react-router-dom";
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
 
 const axios = require('axios')
 
@@ -102,9 +105,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ConsultaUsuarioPages() {
   const classes = useStyles();
+  const [Formulario, setFormulario] = useState({
+    dtaInicio: new Date().toISOString().slice(0, 10),
+    dtaFim: new Date().toISOString().slice(0, 10),
+    desSemestre: 1,
+    codCursoFaseTcc: 1,
+  });
+  
   const [listaUsuario, setListaUsuario] = useState([]);
-
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     axios.get("http://localhost:3001/usuario").then(function (response) {
@@ -114,6 +122,29 @@ export default function ConsultaUsuarioPages() {
       });
 
   }, []);
+
+  const [listaCursos, setlistaCursos] = useState([]);
+  useEffect(() => {
+    const getCursos = async () => {
+      await axios
+        .get("http://localhost:3001/curso")
+        .then(function (response) {
+          setlistaCursos(response.data);
+          console.log(response);
+        })
+        .catch(function (error) {});
+    };
+    
+
+    getCursos();
+  }, []);
+  const updateForm = (e) => {
+    setFormulario({
+      ...Formulario,
+      [e.target.name]: e.target.value,
+    });
+    console.log("Formulario", Formulario);
+  };
 
   const [page, setPage] = React.useState(2);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -145,6 +176,7 @@ export default function ConsultaUsuarioPages() {
     axios.delete(`http://localhost:3001/usuario/${id}`).then((sucess)=>{
         if(sucess){
           setListaUsuario(listaUsuario.filter((e)=>(e.id !== id)))
+          alert("Usuário Excluído com Sucesso!")
         }
       }
     );
@@ -174,13 +206,29 @@ export default function ConsultaUsuarioPages() {
                 spacing="5"
               />
               <TextField id="emailFiltro" label="E-mail" variant="outlined" />
-              <TextField id="CursoFiltro" label="Curso" variant="outlined" />
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel htmlFor="outlined-age-native-simple">Curso</InputLabel>
+                <Select
+                 id="outlined-age-native-simple"
+                 select
+                 label="Selecione o curso"
+                 name="codCursoFaseTcc"
+                 onChange={updateForm}
+                 helperText="Por favor selecione um curso"
+                  inputProps={{
+                    name: 'codCursoFaseTcc',
+                    id: 'outlined-age-native-simple',
+                  }}
+                >
+                  {listaCursos.map((option) => (
+                    <option key={option.id} value={option.id}>
+                      {option.nomcurso}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+              
               <TextField id="matricula" label="Matricula" variant="outlined" />
-              <TextField
-                id="camposFaculdade"
-                label="Unidade Curso"
-                variant="outlined"
-              />
             </form>
           </Container>
           <Container component="div">
@@ -252,9 +300,6 @@ export default function ConsultaUsuarioPages() {
                     <TableCell className={"MuiTableCell-alignCenter"}>
                       Matricula
                     </TableCell>
-                    <TableCell className={"MuiTableCell-alignCenter"}>
-                      Unidade do Curso
-                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody className={"MuiTableCell-body"}>
@@ -281,9 +326,6 @@ export default function ConsultaUsuarioPages() {
                       </TableCell>
                       <TableCell className={"MuiTableCell-alignCenter"}>
                         {linha.matricula}
-                      </TableCell>
-                      <TableCell className={"MuiTableCell-alignCenter"}>
-                        {linha.telefone}
                       </TableCell>
                     </TableRow>
                   ))}
