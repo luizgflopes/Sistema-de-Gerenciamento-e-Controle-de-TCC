@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from "react";
 import Container from "@material-ui/core/Container";
 import { makeStyles, Grid, TablePagination } from "@material-ui/core/";
 import TextField from "@material-ui/core/TextField";
@@ -16,34 +16,9 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import Tooltip from "@material-ui/core/Tooltip";
 import { useHistory } from "react-router-dom";
-import Menu from '../component/Menu';
+import Menu from '../components/Menu';
 
-function listaCurso(codCurso, nomeCurso) {
-  return { codCurso, nomeCurso };
-}
-
-const ListaCurso = [
-  listaCurso(
-    "001",
-    "Sistemas de informação"
-  ),
-  listaCurso(
-    "002",
-    "Análise e desenvolvimento de sistemas"
-  ),
-  listaCurso(
-    "003",
-    "Ciências da computação"
-  ),
-  listaCurso(
-    "004",
-    "Engenharia de software"
-  ),
-  listaCurso(
-    "005",
-    "Matemática da computação"
-  ),
-];
+const axios = require('axios')
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -134,6 +109,17 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PesquisarCurso() {
   const classes = useStyles();
+  const [listaCurso, setListaCurso] = useState([]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    axios.get("http://localhost:3001/curso").then(function (response) {
+      setListaCurso(response.data)
+      })
+      .catch(function (error) {
+      });
+
+  }, []);
 
   {/** Relacionado a Paginação */ }
   const [page, setPage] = React.useState(2);
@@ -142,17 +128,18 @@ export default function PesquisarCurso() {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
+  
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
-  const [codCurso, setcodCurso] = React.useState(0);
+  const [id, setId] = React.useState(0);
   
   /** Relacionado a Seleção da Lista de Curso*/
   const activeRow = (event, linha) => {
     event.preventDefault();
-    setcodCurso(linha.codCurso);
+    setId(linha.id);
   };
 
   const hostHistory = useHistory();
@@ -164,6 +151,15 @@ export default function PesquisarCurso() {
   const editarButtonClick = () => {
     hostHistory.push("/EditarCurso");
   };
+
+  const deletarCurso = () =>{
+    axios.delete(`http://localhost:3001/curso/${id}`).then((sucess)=>{
+        if(sucess){
+          setListaCurso(listaCurso.filter((e)=>(e.id !== id)))
+        }
+      }
+    ); 
+  }
 
   return (
     <Container maxWidth="lg" className={classes.containerC}>
@@ -229,6 +225,9 @@ export default function PesquisarCurso() {
                 style={{ backgroundColor: "red", color: "white" }}
                 className={classes.botoes}
                 startIcon={<DeleteIcon />}
+                onClick={() => {
+                  deletarCurso();
+                }}
               >
                 Excluir
               </Button>
@@ -252,10 +251,10 @@ export default function PesquisarCurso() {
                   </TableRow>
                 </TableHead>
                 <TableBody className={"MuiTableCell-body"}>
-                  {ListaCurso.map((linha) => (
+                  {listaCurso.map((linha) => (
                     <TableRow
-                      key={linha.codCurso}
-                      selected={linha.codCurso === codCurso}
+                      key={linha.id}
+                      selected={linha.id === id}
                       onClick={(event) => {
                         activeRow(event, linha);
                       }}
@@ -265,7 +264,7 @@ export default function PesquisarCurso() {
                         scope="row"
                         className={"MuiTableCell-alignCenter"}
                       >
-                        {linha.codCurso}
+                        {linha.id}
                       </TableCell>
                       <TableCell className={"MuiTableCell-alignCenter"}>
                         {linha.nomeCurso}
