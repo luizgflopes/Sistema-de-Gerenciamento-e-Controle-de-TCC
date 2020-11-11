@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import Container from "@material-ui/core/Container";
 import { makeStyles, Grid, TablePagination } from "@material-ui/core/";
 import TextField from "@material-ui/core/TextField";
@@ -16,86 +16,59 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import Tooltip from "@material-ui/core/Tooltip";
 import { useHistory } from "react-router-dom";
-import Menu from '../components/Menu';
-
-function listaCurso(codCurso, nomeCurso) {
-  return { codCurso, nomeCurso };
-}
-
-const ListaCurso = [
-  listaCurso(
-    "001",
-    "Sistemas de informação"
-  ),
-  listaCurso(
-    "002",
-    "Análise e desenvolvimento de sistemas"
-  ),
-  listaCurso(
-    "003",
-    "Ciências da computação"
-  ),
-  listaCurso(
-    "004",
-    "Engenharia de software"
-  ),
-  listaCurso(
-    "005",
-    "Matemática da computação"
-  ),
-];
-
+import Menu from "../components/Menu";
+import { get, put } from "../infrastructure/axiosApi";
+import DefaultDialogComponent from "../components/DefaultDialogComponent";
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    '& > *': {
+    display: "flex",
+    flexWrap: "wrap",
+    "& > *": {
       margin: theme.spacing(1),
       width: theme.spacing(45),
       height: theme.spacing(10),
-      margintop: theme.spacing(20)
+      margintop: theme.spacing(20),
     },
   },
   botoes: {
-    marginRight: '-230px',
-    marginBottom: '50px',
-    marginLeft: '250px',
+    marginRight: "-230px",
+    marginBottom: "50px",
+    marginLeft: "250px",
   },
   containerC: {
-    marginTop: '60px'
+    marginTop: "60px",
   },
   containerInput: {
-    paddingLeft: '15%',
-    marginTop: '20px'
+    paddingLeft: "15%",
+    marginTop: "20px",
   },
   titulo: {
-    backgroundColor: '#265891',
-    textAlign: 'center',
-    verticalAlign: 'top',
-    fontFamily: 'Arial, Helvetica, sans-serif',
-    fontSize: '20px',
-    fontWeight: 'bold',
-    display: 'flex',
-    flexWrap: 'wrap',
+    backgroundColor: "#265891",
+    textAlign: "center",
+    verticalAlign: "top",
+    fontFamily: "Arial, Helvetica, sans-serif",
+    fontSize: "20px",
+    fontWeight: "bold",
+    display: "flex",
+    flexWrap: "wrap",
   },
   logoNewton: {
-    height: '53px',
-    width: 'auto'
+    height: "53px",
+    width: "auto",
   },
-  container: {
-  },
+  container: {},
   paper: {
-    textAlign: 'left',
+    textAlign: "left",
     color: theme.palette.text.secondary,
-    flex: '1 0 auto',
-    backgroundColor: '#265891',
-    boxShadow: '0 0 black'
+    flex: "1 0 auto",
+    backgroundColor: "#265891",
+    boxShadow: "0 0 black",
   },
   paperLista: {
-    backgroundColor: 'white',
-    marginLeft: '-24px',
-    width: '104.2%',
-    marginTop: '47px'
+    backgroundColor: "white",
+    marginLeft: "-24px",
+    width: "104.2%",
+    marginTop: "47px",
   },
   paperDireita: {
     marginLeft: "-250px",
@@ -107,9 +80,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#265891",
     boxShadow: "0 0 black",
   },
-  gridPaginacao:{
-    alignItems:'center',
-    paddingRight: '34%'
+  gridPaginacao: {
+    alignItems: "center",
+    paddingRight: "34%",
   },
   paperTabela: {
     padding: theme.spacing(5),
@@ -119,12 +92,12 @@ const useStyles = makeStyles((theme) => ({
   },
   table: {
     minWidth: 650,
-    backgroundColor: theme.palette.action.hover
+    backgroundColor: theme.palette.action.hover,
   },
   tableHead: {
     backgroundColor: "#265891",
     color: theme.palette.common.white,
-    textAlign: 'center'
+    textAlign: "center",
   },
   gridCentral: {
     marginTop: "100px",
@@ -134,11 +107,30 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PesquisarCurso() {
   const classes = useStyles();
-
-  {/** Relacionado a Paginação */ }
+  const [searchForm, setsearchForm] = useState({
+    id:'',
+    nomcurso:'undefined'
+  })
+  const [updateScreen, setupdateScreen] = useState(true);
   const [page, setPage] = React.useState(2);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
+  const [listaCursos, setlistaCursos] = useState([]);
+  const [showEdit, setshowEdit] = useState(false);
+  const [curso, setCurso] = useState({});
+  useEffect(() => {
+    getListaCursos();
+    setupdateScreen(false);
+  }, [updateScreen]);
+  
+  const getListaCursos = async () => {
+    let result = await get(
+      "curso",
+      "Não foi possivel Obter a listagem de cursos",
+      "Sucesso"
+    );
+    console.log('cursos',result)
+    setlistaCursos(result);
+  };
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -148,11 +140,9 @@ export default function PesquisarCurso() {
   };
 
   const [codCurso, setcodCurso] = React.useState(0);
-  
-  /** Relacionado a Seleção da Lista de Curso*/
   const activeRow = (event, linha) => {
     event.preventDefault();
-    setcodCurso(linha.codCurso);
+    setcodCurso(linha.id);
   };
 
   const hostHistory = useHistory();
@@ -164,15 +154,57 @@ export default function PesquisarCurso() {
   const editarButtonClick = () => {
     hostHistory.push("/EditarCurso");
   };
+  async function editarEvent() {
+    let result = await get(
+      `curso/${codCurso}`,
+      "Ouve um erro ao obter os dados deste curso",
+      "Sucesso"
+    );
+    setCurso(result);
+    if (curso) {
+      setshowEdit(true);
+    }
+  }
 
+  function onCloseModal() {
+    setCurso({});
+    setshowEdit(false);
+  }
+  function onCloseModal() {
+    setCurso({});
+    setshowEdit(false);
+  }
+  async function atualizarEvent(){
+    let result= await put(`curso/${codCurso}`,curso,'Não foi possivel atualizar o curso', 'Atualizado com sucesso')
+    setshowEdit(false)
+    setupdateScreen(true)
+  }
+  async function  getCursosByFilter(){
+    let result= await get(`curso/filter/${searchForm.id&& searchForm.id.trim()?searchForm.id:'undefined'}/${searchForm.nomcurso}`,curso,'Não foi possivel obter a listagem de curso com esses parametros', 'Atualizado com sucesso')
+    setlistaCursos(result)
+  }
+  const updateFormCurso = (e) => {
+    setCurso({
+      ...curso,
+      [e.target.name]: e.target.value,
+    });
+    console.log("Formulario", curso);
+  };
+  const updateFormSearchForm = (e) => {
+    setsearchForm({
+      ...searchForm,
+      [e.target.name]: e.target.value,
+    });
+    console.log("Formulario", curso);
+  };
   return (
     <Container maxWidth="lg" className={classes.containerC}>
-      <Container component='div'>
+      <Container component="div">
         <Menu />
         <Paper elevation={3}>
           <div className={classes.titulo}>
             <Hidden xsDown>
-              <Paper className={classes.paper} >
+              <Paper className={classes.paper}>
                 <img src={Newton} className={classes.logoNewton} />
               </Paper>
             </Hidden>
@@ -180,14 +212,26 @@ export default function PesquisarCurso() {
               <Paper className={classes.paperDireita}>Pesquisar Cursos</Paper>
             </Hidden>
           </div>
-          <Container component='div' className={classes.containerInput}>
+          <Container component="div" className={classes.containerInput}>
             <form className={classes.root} noValidate autoComplete="on">
-              <TextField id="codCurso" label="Código do curso" variant="outlined" spacing="5" />
-              <TextField id="nomeCurso" label="Nome do curso" variant="outlined" />
+              <TextField
+                name="id"
+                label="Código do curso"
+                variant="outlined"
+                spacing="5"
+                onChange={(e)=>{updateFormSearchForm(e)}}
+              />
+              <TextField
+                name="nomcurso"
+                label="Nome do curso"
+                variant="outlined"
+                onChange={(e)=>{updateFormSearchForm(e)}}
+
+              />
             </form>
           </Container>
-          <Container component='div'>
-          <Tooltip title="Adicionar Curso" interactive>
+          <Container component="div">
+            <Tooltip title="Adicionar Curso" interactive>
               <Button
                 variant="contained"
                 color="primary"
@@ -207,9 +251,24 @@ export default function PesquisarCurso() {
                 className={classes.botoes}
                 startIcon={<Icon>edit</Icon>}
                 onClick={() => {
-                  editarButtonClick();
+                  editarEvent();
                 }}
               >
+                <DefaultDialogComponent
+                  onClose={onCloseModal}
+                  open={showEdit}
+                  confirmAction={atualizarEvent}
+                  title="Editar Curso"
+                >
+                  <TextField
+                    name="nomcurso"
+                    value={curso?curso.nomcurso:''}
+                    onChange={e => {
+                      updateFormCurso(e);
+                    }}
+                    variant="filled"
+                  />
+                </DefaultDialogComponent>
                 Editar
               </Button>
             </Tooltip>
@@ -219,6 +278,8 @@ export default function PesquisarCurso() {
                 color="primary"
                 className={classes.botoes}
                 startIcon={<Icon>search</Icon>}
+                onClick={(e)=>{e.preventDefault();
+                  getCursosByFilter(e)}}
                 label="search"
               >
                 Pesquisar
@@ -238,25 +299,33 @@ export default function PesquisarCurso() {
         </Paper>
 
         {/** Tentar Colocar a Lista aqui a abaixo - Layout Simular ao de Cima!*/}
-        <Container component='div'>
-          <Paper elevation={3} className={classes.Paper, classes.paperLista}>
-          <TableContainer component={Paper}>
+        <Container component="div">
+          <Paper elevation={3} className={(classes.Paper, classes.paperLista)}>
+            <TableContainer component={Paper}>
               <Table className={classes.table}>
                 <TableHead className={"MuiTableCell-head"}>
                   <TableRow className={classes.tableHead}>
-                    <TableCell className={"MuiTableCell-alignCenter", classes.tableHead}>
+                    <TableCell
+                      className={
+                        ("MuiTableCell-alignCenter", classes.tableHead)
+                      }
+                    >
                       Código do Curso
                     </TableCell>
-                    <TableCell className={"MuiTableCell-alignCenter", classes.tableHead}>
+                    <TableCell
+                      className={
+                        ("MuiTableCell-alignCenter", classes.tableHead)
+                      }
+                    >
                       Nome do Curso
                     </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody className={"MuiTableCell-body"}>
-                  {ListaCurso.map((linha) => (
+                  {listaCursos.map((linha) => (
                     <TableRow
-                      key={linha.codCurso}
-                      selected={linha.codCurso === codCurso}
+                      key={linha.id}
+                      selected={linha.id === codCurso}
                       onClick={(event) => {
                         activeRow(event, linha);
                       }}
@@ -266,10 +335,10 @@ export default function PesquisarCurso() {
                         scope="row"
                         className={"MuiTableCell-alignCenter"}
                       >
-                        {linha.codCurso}
+                        {linha.id}
                       </TableCell>
                       <TableCell className={"MuiTableCell-alignCenter"}>
-                        {linha.nomeCurso}
+                        {linha.nomcurso}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -284,17 +353,16 @@ export default function PesquisarCurso() {
                 onChangePage={handleChangePage}
                 rowsPerPage={rowsPerPage}
                 onChangeRowsPerPage={handleChangeRowsPerPage}
-                nextIconButtonText={'Proximo'}
-                backIconButtonText={'Voltar'}
-                labelRowsPerPage={'Linhas por página'}
+                nextIconButtonText={"Proximo"}
+                backIconButtonText={"Voltar"}
+                labelRowsPerPage={"Linhas por página"}
               />
-            </Grid>           
+            </Grid>
           </Paper>
         </Container>
       </Container>
     </Container>
   );
 }
-
 
 //teste teste teste
