@@ -38,6 +38,7 @@ const cursos = ["Sistema de Informação", "Análise e Desenvolvimento de Sistem
 const sexo = ["Masculino", "Feminino", "Outros"]
 const perfil = ["Orientador/Gestor", "Coordenador", "Aluno"]
 
+
 export default function CadastroUsuario() {
   const classes = useStyles();
   const history = useHistory();
@@ -51,6 +52,14 @@ export default function CadastroUsuario() {
     email: null,
     senha: null,
   });
+  const salvarUsuario = () =>{
+    axios.put(`http://localhost:3001/usuario/`).then((sucess)=>{
+        if(sucess){
+          alert("Usuário criado com Sucesso!")
+        }
+      }
+    );
+  }
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -186,6 +195,9 @@ export default function CadastroUsuario() {
             variant="contained"
             color="primary"
             className={classes.entrarbutton}
+            onClick={() => {
+              salvarUsuario();
+            }}
           >
             Salvar
           </Button>
