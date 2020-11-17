@@ -267,7 +267,7 @@ export default function PesquisarCurso() {
                         {linha.id}
                       </TableCell>
                       <TableCell className={"MuiTableCell-alignCenter"}>
-                        {linha.nomeCurso}
+                        {linha.nomcurso}
                       </TableCell>
                     </TableRow>
                   ))}

@@ -19,7 +19,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 
 const drawerWidth = 240;
@@ -146,26 +145,13 @@ export default function MiniDrawer() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            SGCT
+            TCC
           </Typography>
             {/**Inicio do menu de login e logout*/}
             <div>
                 <Button className={classes.profileIcon} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-                <AccountCircle />
-                    Perfil
+                    Sair
                 </Button>
-                <Menu
-                    className={classes.profileMenu}
-                    id="simple-menu"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
-                >
-                <MenuItem onClick={handleClose}>Teste</MenuItem>
-                <MenuItem onClick={handleClose}>Teste</MenuItem>
-                <MenuItem onClick={handleClose}>Sair</MenuItem>
-                </Menu>
             </div>
             {/**Fim do menu de login e logout*/}
         </Toolbar>
