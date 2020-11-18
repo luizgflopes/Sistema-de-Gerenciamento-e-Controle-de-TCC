@@ -39,7 +39,9 @@ const useStyles = makeStyles((theme) => ({
 
 const sexo = ["Masculino", "Feminino", "Outros"]
 
+
 export default function CadastroUsuario() {
+<<<<<<< HEAD
 
   const classes = useStyles()
 
@@ -100,6 +102,28 @@ export default function CadastroUsuario() {
     })
   }
 
+=======
+  const classes = useStyles();
+  const history = useHistory();
+  const [formulario, setformulario] = useState({
+    perfil: null,
+    nome: null,
+    matricula: null,
+    curso: null,
+    sexo: null,
+    tel: null,
+    email: null,
+    senha: null,
+  });
+  const salvarUsuario = () =>{
+    axios.put(`http://localhost:3001/usuario/`).then((sucess)=>{
+        if(sucess){
+          alert("Usuário criado com Sucesso!")
+        }
+      }
+    );
+  }
+>>>>>>> 6070f6a5e261e33c658154553f1a5255ae02952f
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -246,6 +270,9 @@ export default function CadastroUsuario() {
             variant="contained"
             color="primary"
             className={classes.entrarbutton}
+            onClick={() => {
+              salvarUsuario();
+            }}
           >
             Salvar
           </Button>
