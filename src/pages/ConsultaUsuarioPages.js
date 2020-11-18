@@ -169,7 +169,7 @@ export default function ConsultaUsuarioPages() {
   const hostHistory = useHistory();
 
   const editarButtonClick = () => {
-    hostHistory.push("/criarconta");
+    hostHistory.push("/cadastraUsuario");
   };
 
   const deletarUsuario = () =>{
