@@ -1,4 +1,4 @@
-import React from "react"
+import React,{useHistory,useState} from "react"
 import api from '../api'
 import Avatar from "@material-ui/core/Avatar"
 import Button from "@material-ui/core/Button"
@@ -13,7 +13,7 @@ import Container from "@material-ui/core/Container"
 import Grid from "@material-ui/core/Grid"
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined"
 
-
+const axios = require("axios")
 const useStyles = makeStyles((theme) => ({
   configuracaopagina: {
     marginTop: theme.spacing(8),
@@ -42,18 +42,6 @@ const sexo = ["Masculino", "Feminino", "Outros"]
 
 export default function CadastroUsuario() {
 
-  const classes = useStyles()
-
-  const [formulario, setformulario] = React.useState({
-    perfil: '',
-    nome: '',
-    matricula: '',
-    curso: '',
-    sexo: '',
-    tel: '',
-    email: '',
-    senha: '',
-  })
 
   const [listaCursos, setlistaCursos] = React.useState([]);
   React.useEffect(() => {
