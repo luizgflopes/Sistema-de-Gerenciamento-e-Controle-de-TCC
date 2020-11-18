@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
+=======
+import React, {useState, useEffect} from "react";
+>>>>>>> origin/IsaacIntegracao
 import Container from "@material-ui/core/Container";
 import { makeStyles, Grid, TablePagination } from "@material-ui/core/";
 import TextField from "@material-ui/core/TextField";
@@ -16,9 +20,16 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import Tooltip from "@material-ui/core/Tooltip";
 import { useHistory } from "react-router-dom";
+<<<<<<< HEAD
 import Menu from "../components/Menu";
 import { get, put } from "../infrastructure/axiosApi";
 import DefaultDialogComponent from "../components/DefaultDialogComponent";
+=======
+import Menu from '../components/Menu';
+
+const axios = require('axios')
+
+>>>>>>> origin/IsaacIntegracao
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -39,8 +50,13 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "60px",
   },
   containerInput: {
+<<<<<<< HEAD
     paddingLeft: "15%",
     marginTop: "20px",
+=======
+    paddingLeft: '30%',
+    marginTop: '20px'
+>>>>>>> origin/IsaacIntegracao
   },
   titulo: {
     backgroundColor: "#265891",
@@ -107,11 +123,27 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PesquisarCurso() {
   const classes = useStyles();
+<<<<<<< HEAD
   const [searchForm, setsearchForm] = useState({
     id:'',
     nomcurso:'undefined'
   })
   const [updateScreen, setupdateScreen] = useState(true);
+=======
+  const [listaCurso, setListaCurso] = useState([]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    axios.get("http://localhost:3001/curso").then(function (response) {
+      setListaCurso(response.data)
+      })
+      .catch(function (error) {
+      });
+
+  }, []);
+
+  {/** Relacionado a Paginação */ }
+>>>>>>> origin/IsaacIntegracao
   const [page, setPage] = React.useState(2);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [listaCursos, setlistaCursos] = useState([]);
@@ -134,15 +166,25 @@ export default function PesquisarCurso() {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
+  
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
+<<<<<<< HEAD
   const [codCurso, setcodCurso] = React.useState(0);
   const activeRow = (event, linha) => {
     event.preventDefault();
     setcodCurso(linha.id);
+=======
+  const [id, setId] = React.useState(0);
+  
+  /** Relacionado a Seleção da Lista de Curso*/
+  const activeRow = (event, linha) => {
+    event.preventDefault();
+    setId(linha.id);
+>>>>>>> origin/IsaacIntegracao
   };
 
   const hostHistory = useHistory();
@@ -166,6 +208,7 @@ export default function PesquisarCurso() {
     }
   }
 
+<<<<<<< HEAD
   function onCloseModal() {
     setCurso({});
     setshowEdit(false);
@@ -197,6 +240,17 @@ export default function PesquisarCurso() {
     });
     console.log("Formulario", curso);
   };
+=======
+  const deletarCurso = () =>{
+    axios.delete(`http://localhost:3001/curso/${id}`).then((sucess)=>{
+        if(sucess){
+          setListaCurso(listaCurso.filter((e)=>(e.id !== id)))
+        }
+      }
+    ); 
+  }
+
+>>>>>>> origin/IsaacIntegracao
   return (
     <Container maxWidth="lg" className={classes.containerC}>
       <Container component="div">
@@ -214,6 +268,7 @@ export default function PesquisarCurso() {
           </div>
           <Container component="div" className={classes.containerInput}>
             <form className={classes.root} noValidate autoComplete="on">
+<<<<<<< HEAD
               <TextField
                 name="id"
                 label="Código do curso"
@@ -228,6 +283,9 @@ export default function PesquisarCurso() {
                 onChange={(e)=>{updateFormSearchForm(e)}}
 
               />
+=======
+              <TextField id="nomeCurso" label="Nome do curso" variant="outlined" />
+>>>>>>> origin/IsaacIntegracao
             </form>
           </Container>
           <Container component="div">
@@ -291,6 +349,9 @@ export default function PesquisarCurso() {
                 style={{ backgroundColor: "red", color: "white" }}
                 className={classes.botoes}
                 startIcon={<DeleteIcon />}
+                onClick={() => {
+                  deletarCurso();
+                }}
               >
                 Excluir
               </Button>
@@ -322,10 +383,17 @@ export default function PesquisarCurso() {
                   </TableRow>
                 </TableHead>
                 <TableBody className={"MuiTableCell-body"}>
+<<<<<<< HEAD
                   {listaCursos.map((linha) => (
                     <TableRow
                       key={linha.id}
                       selected={linha.id === codCurso}
+=======
+                  {listaCurso.map((linha) => (
+                    <TableRow
+                      key={linha.id}
+                      selected={linha.id === id}
+>>>>>>> origin/IsaacIntegracao
                       onClick={(event) => {
                         activeRow(event, linha);
                       }}
