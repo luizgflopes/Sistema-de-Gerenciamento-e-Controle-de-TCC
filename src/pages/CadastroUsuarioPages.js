@@ -41,7 +41,6 @@ const sexo = ["Masculino", "Feminino", "Outros"]
 
 
 export default function CadastroUsuario() {
-<<<<<<< HEAD
 
   const classes = useStyles()
 
@@ -102,7 +101,6 @@ export default function CadastroUsuario() {
     })
   }
 
-=======
   const classes = useStyles();
   const history = useHistory();
   const [formulario, setformulario] = useState({
@@ -123,7 +121,6 @@ export default function CadastroUsuario() {
       }
     );
   }
->>>>>>> 6070f6a5e261e33c658154553f1a5255ae02952f
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
