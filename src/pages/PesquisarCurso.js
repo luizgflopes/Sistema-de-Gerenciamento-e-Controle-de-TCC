@@ -17,7 +17,7 @@ import TableBody from "@material-ui/core/TableBody";
 import Tooltip from "@material-ui/core/Tooltip";
 import { useHistory } from "react-router-dom";
 import Menu from "../components/Menu";
-import { get, put } from "../infrastructure/axiosApi";
+import { get, put,excluir} from "../infrastructure/axiosApi";
 import DefaultDialogComponent from "../components/DefaultDialogComponent";
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -144,7 +144,9 @@ export default function PesquisarCurso() {
     event.preventDefault();
     setcodCurso(linha.id);
   };
-
+  const deleteCursoFunc = ()=>{
+    excluir(`curso/${codCurso}`);
+  }
   const hostHistory = useHistory();
 
   const adicionarButtonClick = () => {

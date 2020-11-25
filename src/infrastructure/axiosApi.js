@@ -34,3 +34,14 @@ export async function put(url,bodyParams,errorMenssage,sucessMenssage){
         return null;
     })
 }
+
+export async function excluir(url,bodyParams,errorMenssage,sucessMenssage){
+  return await axiosApi.delete(url)
+  .then(r=>{
+      console.log("api",r)
+      return r;
+    //  notificationHook(sucessMenssage)
+  }).catch(err=>{
+      return null;
+  })
+}
