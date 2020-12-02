@@ -2,10 +2,8 @@ import React from "react"
 import api from '../api'
 import Avatar from "@material-ui/core/Avatar"
 import Button from "@material-ui/core/Button"
-import MenuItem from "@material-ui/core/MenuItem"
 import CssBaseline from "@material-ui/core/CssBaseline"
 import TextField from "@material-ui/core/TextField"
-import Autocomplete from '@material-ui/lab/Autocomplete'
 import Typography from "@material-ui/core/Typography"
 import { makeStyles } from "@material-ui/core/styles"
 import logo from "../images/iconetcc.png"
@@ -37,21 +35,26 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-const sexo = ["Masculino", "Feminino", "Outros"]
+const sexo = [
+  {id: 0, desSexo:"Masculino"},
+  {id: 1, desSexo: "Feminino"}
+]
 
 export default function CadastroUsuario() {
 
   const classes = useStyles()
 
   const [formulario, setformulario] = React.useState({
-    perfil: '',
+    codPerfil: '',
     nome: '',
-    matricula: '',
-    curso: '',
-    sexo: '',
-    tel: '',
     email: '',
+    matricula: '',
+    nomCurso: '',
+    telefone: '',
     senha: '',
+    sexo: null,
+    desEndereco: '',
+    dataNasc: '',
   })
 
   const [listaCursos, setlistaCursos] = React.useState([]);
@@ -84,21 +87,26 @@ export default function CadastroUsuario() {
     getPerfil();
   }, []);
 
-  const cursos = []
-  listaCursos.map((option) => (cursos.push(option.nomcurso)))
-  const perfil = []
-  listaPerfil.map((option) => (perfil.push(option.perfil)))
-  
   const handleChange = (event) => {
-    console.log(event.target, event.target.value, event.target.name);
-    console.log('formulario', formulario);
+    console.log(event.target, event.target.value, event.target.name)
+    console.log('formulario', formulario)
     
-    const name = event.target.name;
+    const name = event.target.name
     setformulario({
       ...formulario,
       [name]: event.target.value,
     })
   }
+
+  function handlePost() {
+    api.post('/usuario', formulario).then((response)=>{
+      if(response){
+        alert("Usuário criado com Sucesso!")
+      }
+    }).catch(function (err) {
+      alert(err + " Acesso Negado")
+    })    
+}
 
   return (
     <Container component="main" maxWidth="xs">
@@ -113,16 +121,27 @@ export default function CadastroUsuario() {
         <form className={classes.formulario} >
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Autocomplete
-                id="perfil"
-                name="perfil"
-                autoComplete={true}
+              <TextField
+                select
+                variant="outlined"
+                id="codPerfil"
+                name="codPerfil"
+                label="Perfil"
                 onChange={handleChange}
                 fullWidth
-                options={perfil}
-                getOptionLabel={(option) => option}
-                renderInput={(params) => <TextField {...params} label="Perfil" variant="outlined" required />}
-              />
+                SelectProps={{
+                  native: true,
+                }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              >
+                {listaPerfil.map((perfil) => (
+                  <option key={perfil.id} value={perfil.id} name={perfil.nomcuso}>
+                  {perfil.perfil}
+                </option>
+                ))}
+              </TextField>
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -152,54 +171,91 @@ export default function CadastroUsuario() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Autocomplete
+              <TextField
+                select
+                variant="outlined"
+                value={formulario.sexo}
                 id="sexo"
                 name="sexo"
-                autoComplete={true}
+                label="Sexo"
                 onChange={handleChange}
                 fullWidth
-                options={sexo}
-                getOptionLabel={(option) => option}
-                renderInput={(params) => <TextField {...params} label="Sexo" variant="outlined" required />}
+                SelectProps={{
+                  native: true,
+                }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              >
+                {sexo.map((sexo)=> (
+                  <option key={sexo.id} value={sexo.id}>
+                    {sexo.desSexo}
+                  </option>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                select
+                variant="outlined"
+                id="nomCurso"
+                name="nomCurso"
+                label="Curso"
+                value={formulario.curso}
+                fullWidth                
+                onChange={handleChange}
+                SelectProps={{
+                  native: true,
+                }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              >
+                {listaCursos.map((curso)=> (
+                  <option key={curso.id} value={curso.id} name={curso.nomcuso}>
+                    {curso.nomcurso}
+                  </option>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                onChange={handleChange}
+                id="telefone"
+                label="Telefone"
+                name="telefone"
+                autoComplete='telefone'
+                type="tel"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                onChange={handleChange}
+                id="dataNasc"
+                name="dataNasc"
+                type="date"
+                label="Data Nascimento"
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
             </Grid>
             <Grid item xs={12}>
-              <Autocomplete
-                id="curso"
-                name="curso"
-                /* value={formulario.curso} */
-                autoComplete={true}
-                fullWidth
-                onChange={handleChange}
-                options={cursos}
-                getOptionLabel={(option) => option}
-                renderInput={(params) => <TextField {...params} label="Curso" variant="outlined" required />}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
               <TextField
                 variant="outlined"
                 required
                 fullWidth
                 onChange={handleChange}
-                id="phone1"
-                label="Telefone"
-                name="phone1"
-                autoComplete='phone1'
-                type="tel"
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                onChange={handleChange}
-                id="phone2"
-                label="Celular"
-                name="phone2"
-                autoComplete='phone2'
-                type="tel"
+                id="desEndereco"
+                label="Endereço"
+                name="desEndereco"
+                autoComplete="desEndereco"
               />
             </Grid>
             <Grid item xs={12}>
@@ -213,7 +269,7 @@ export default function CadastroUsuario() {
                 name="email"
                 autoComplete="email"
               />
-            </Grid>
+            </Grid>            
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -226,26 +282,15 @@ export default function CadastroUsuario() {
                 id="senha"
                 autoComplete='senha'
               />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                onChange={handleChange}
-                name="csenha"
-                label="Confirmar senha"
-                type="password"
-                id="scenha"
-              />
-            </Grid>
+            </Grid>            
           </Grid>
           <Button
-            type="entrarbutton"
+            type="button"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.entrarbutton}
+            onClick={handlePost}
           >
             Salvar
           </Button>
