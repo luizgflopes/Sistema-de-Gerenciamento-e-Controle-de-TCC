@@ -49,43 +49,52 @@ export default function CadastroUsuario() {
     nome: '',
     email: '',
     matricula: '',
-    nomCurso: '',
+    codCurso: '1',
     telefone: '',
     senha: '',
-    sexo: '',
+    sexo: '0',
     desEndereco: '',
     dataNasc: '',
   })
 
-  const [listaCursos, setlistaCursos] = React.useState([]);
+  const [listaCursos, setlistaCursos] = React.useState([])
+  const [listaPerfil, setlistaPerfil] = React.useState([])
+
   React.useEffect(() => {
     const getCursos = async () => {
       await api
         .get("/curso")
         .then(function (response) {
-          setlistaCursos(response.data);
-          console.log(response);
+          setlistaCursos(response.data)
+          if(response.data.length > 0) {
+            setformulario({
+              ...formulario,
+              codCurso: response.data[0].id,
+            })
+          }
+          console.log(response)
         })
         .catch(function (error) {});
-    };
-
-    getCursos();
-  }, []);
-
-  const [listaPerfil, setlistaPerfil] = React.useState([]);
-  React.useEffect(() => {
+    }
     const getPerfil = async () => {
       await api
         .get("/perfil")
         .then(function (response) {
-          setlistaPerfil(response.data);
+          setlistaPerfil(response.data)
+          if(response.data.length > 0) {
+            setformulario({
+              ...formulario,
+              codPerfil: response.data[0].id,
+            })
+          }
           console.log(response);
         })
         .catch(function (error) {});
-    };
-
-    getPerfil();
-  }, []);
+    }
+    
+    getCursos()
+    getPerfil()
+  }, [])
 
   const handleChange = (event) => {
     console.log(event.target, event.target.value, event.target.name)
@@ -137,7 +146,7 @@ export default function CadastroUsuario() {
                 }}
               >
                 {listaPerfil.map((perfil) => (
-                  <option key={perfil.id} value={perfil.id} name={perfil.nomcuso}>
+                  <option key={perfil.id} value={perfil.id} name={perfil.perfil}>
                   {perfil.perfil}
                 </option>
                 ))}
@@ -145,9 +154,7 @@ export default function CadastroUsuario() {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                  /* value={formulario.nome} */
                   error={!/^[a-zA-Z]*$/.test(formulario.nome)}
-                  autoComplete='nome'
                   name="nome"
                   variant="outlined"
                   required
@@ -174,7 +181,7 @@ export default function CadastroUsuario() {
               <TextField
                 select
                 variant="outlined"
-                value={formulario.sexo}
+                value={formulario.sexo ? formulario.sexo: 0}
                 id="sexo"
                 name="sexo"
                 label="Sexo"
@@ -198,10 +205,9 @@ export default function CadastroUsuario() {
               <TextField
                 select
                 variant="outlined"
-                id="nomCurso"
-                name="nomCurso"
+                id="codCurso"
+                name="codCurso"
                 label="Curso"
-                value={formulario.curso}
                 fullWidth                
                 onChange={handleChange}
                 SelectProps={{
@@ -212,7 +218,7 @@ export default function CadastroUsuario() {
                 }}
               >
                 {listaCursos.map((curso)=> (
-                  <option key={curso.id} value={curso.id} name={curso.nomcuso}>
+                  <option key={curso.id} value={curso.id} name={curso.nomcurso}>
                     {curso.nomcurso}
                   </option>
                 ))}
