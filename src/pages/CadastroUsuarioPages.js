@@ -90,7 +90,6 @@ export default function CadastroUsuario() {
   }
 
   const classes = useStyles();
-  const history = useHistory();
   const [formulario, setformulario] = useState({
     perfil: null,
     nome: null,
@@ -102,7 +101,7 @@ export default function CadastroUsuario() {
     senha: null,
   });
   const salvarUsuario = () =>{
-    axios.put(`http://localhost:3001/usuario/`).then((sucess)=>{
+    axios.post(`http://localhost:3001/usuario/`).then((sucess)=>{
         if(sucess){
           alert("Usuário criado com Sucesso!")
         }

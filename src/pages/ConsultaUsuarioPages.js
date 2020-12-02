@@ -19,6 +19,8 @@ import { useHistory } from "react-router-dom";
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
+import DefaultDialogComponent from "../components/DefaultDialogComponent";
+import { get, put,excluir} from "../infrastructure/axiosApi";
 
 const axios = require('axios')
 
@@ -122,18 +124,22 @@ export default function ConsultaUsuarioPages() {
   
   const [listaUsuario, setListaUsuario] = useState([]);
   const [listaUsuarioBackup, setListaUsuarioBackup] = useState([]);
+  const [showEdit, setshowEdit] = useState(false);
+  const [usuario, setUsuario] = useState({});
+  const [id, setId] = React.useState(0);
+  const [updateScreen, setupdateScreen] = useState(true);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     axios.get("http://localhost:3001/usuario").then(function (response) {
       console.log('user',response)
       setListaUsuario(response.data)
-      setListaUsuarioBackup(response.data)
+      setupdateScreen(false);
       })
       .catch(function (error) {
       });
 
-  }, []);
+  }, [updateScreen]);
 
   const [listaCursos, setlistaCursos] = useState([]);
   useEffect(() => {
@@ -150,6 +156,7 @@ export default function ConsultaUsuarioPages() {
 
     getCursos();
   }, []);
+  
   const pesquisarPorFiltro=()=>{
     setListaUsuario(listaUsuarioBackup)
     if(Formulario.nome&&Formulario.nome.trim()){
@@ -173,6 +180,16 @@ export default function ConsultaUsuarioPages() {
       }))
     }
   }
+  async function atualizarEvent(){
+     let result= await put(`usuario/${id}`,usuario,'Não foi possivel atualizar o curso', 'Atualizado com sucesso')
+     setshowEdit(false)
+     setupdateScreen(true)
+  }
+  function onCloseModal() {
+    setshowEdit(false);
+    setUsuario({});
+
+  }
   const updateForm = (e) => {
     setFormulario({
       ...Formulario,
@@ -192,7 +209,6 @@ export default function ConsultaUsuarioPages() {
     setPage(0);
   };
 
-  const [id, setId] = React.useState(0);
 
     /** Relacionado a Selecao da Lista de Usuário*/
 
@@ -205,7 +221,7 @@ export default function ConsultaUsuarioPages() {
   const hostHistory = useHistory();
 
   const editarButtonClick = () => {
-    hostHistory.push("/cadastraUsuario");
+    setshowEdit(true)
   };
 
   const deletarUsuario = () =>{
@@ -216,7 +232,6 @@ export default function ConsultaUsuarioPages() {
         }
       }
     );
-    
     
   }
   return (
@@ -264,7 +279,6 @@ export default function ConsultaUsuarioPages() {
                   ))}
                 </Select>
               </FormControl>
-              
               <TextField name="matricula" label="Matricula" variant="outlined" onChange={updateForm} />
             </form>
           </Container>
@@ -288,7 +302,21 @@ export default function ConsultaUsuarioPages() {
                 onClick={() => {
                   editarButtonClick();
                 }}
+                
               >
+                 <DefaultDialogComponent
+                  onClose={onCloseModal}
+                  open={showEdit}
+                  confirmAction={atualizarEvent}
+                  title="Editar Curso"
+                >
+                  <TextField
+                    name="nomcurso"
+                    value=''
+                    
+                    variant="filled"
+                  />
+                </DefaultDialogComponent>
                 Editar
               </Button>
             </Tooltip>
@@ -296,7 +324,7 @@ export default function ConsultaUsuarioPages() {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={pesquisarPorFiltro}
+                onClick={()=>{}}
                 className={classes.botoes}
                 startIcon={<Icon>search</Icon>}
               >
@@ -361,7 +389,7 @@ export default function ConsultaUsuarioPages() {
                         {linha.email}
                       </TableCell>
                       <TableCell className={"MuiTableCell-alignCenter"}>
-                        {linha.Curso.nomcurso}
+                        {linha.curso&&linha.curso.nomcurso?linha.curso.nomcurso:""}
                       </TableCell>
                       <TableCell className={"MuiTableCell-alignCenter"}>
                         {linha.matricula}

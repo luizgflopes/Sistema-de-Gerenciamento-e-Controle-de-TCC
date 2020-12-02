@@ -107,7 +107,7 @@ export default function CronogramaPage() {
                 >
                   {listaCursos.map((option) => (
                     <MenuItem key={option.id} value={option.id}>
-                      {option.nomcurso}
+                      {option.Curso.nomcurso}
                     </MenuItem>
                   ))}
                 </TextField>

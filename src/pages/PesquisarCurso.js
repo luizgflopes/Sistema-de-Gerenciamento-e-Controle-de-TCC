@@ -17,7 +17,7 @@ import TableBody from "@material-ui/core/TableBody";
 import Tooltip from "@material-ui/core/Tooltip";
 import { useHistory } from "react-router-dom";
 import Menu from "../components/Menu";
-import { get, put,excluir} from "../infrastructure/axiosApi";
+import { get, put, excluir } from "../infrastructure/axiosApi";
 import DefaultDialogComponent from "../components/DefaultDialogComponent";
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -108,9 +108,9 @@ const useStyles = makeStyles((theme) => ({
 export default function PesquisarCurso() {
   const classes = useStyles();
   const [searchForm, setsearchForm] = useState({
-    id:'',
-    nomcurso:'undefined'
-  })
+    id: "",
+    nomcurso: "undefined",
+  });
   const [updateScreen, setupdateScreen] = useState(true);
   const [page, setPage] = React.useState(2);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -120,15 +120,16 @@ export default function PesquisarCurso() {
   useEffect(() => {
     getListaCursos();
     setupdateScreen(false);
+    setshowEdit(false);
   }, [updateScreen]);
-  
+
   const getListaCursos = async () => {
     let result = await get(
       "curso",
       "Não foi possivel Obter a listagem de cursos",
       "Sucesso"
     );
-    console.log('cursos',result)
+    console.log("cursos", result);
     setlistaCursos(result);
   };
   const handleChangePage = (event, newPage) => {
@@ -141,12 +142,13 @@ export default function PesquisarCurso() {
 
   const [codCurso, setcodCurso] = React.useState(0);
   const activeRow = (event, linha) => {
+    console.log("linha", linha);
     event.preventDefault();
     setcodCurso(linha.id);
   };
-  const deleteCursoFunc = ()=>{
+  const deleteCursoFunc = () => {
     excluir(`curso/${codCurso}`);
-  }
+  };
   const hostHistory = useHistory();
 
   const adicionarButtonClick = () => {
@@ -156,34 +158,45 @@ export default function PesquisarCurso() {
   const editarButtonClick = () => {
     hostHistory.push("/EditarCurso");
   };
-  async function editarEvent() {
-    let result = await get(
+
+  async function onCloseModal() {
+    await new Promise(resolve => setTimeout(resolve, 500))
+    setshowEdit(false);
+    setupdateScreen(true);
+  }
+  async function atualizarEvent() {
+    let result = await put(
       `curso/${codCurso}`,
-      "Ouve um erro ao obter os dados deste curso",
-      "Sucesso"
+      curso,
+      "Não foi possivel atualizar o curso",
+      "Atualizado com sucesso"
     );
-    setCurso(result);
-    if (curso) {
-      setshowEdit(true);
+    setshowEdit(false);
+    setupdateScreen(true);
+  }
+  async function editarEvent(e) {
+    if (e.type === "click") {
+      let result = await get(
+        `curso/${codCurso}`,
+        "Ouve um erro ao obter os dados deste curso",
+        "Sucesso"
+      );
+      setCurso(result);
+      if (curso) {
+        setshowEdit(true);
+      }
     }
   }
-
-  function onCloseModal() {
-    setCurso({});
-    setshowEdit(false);
-  }
-  function onCloseModal() {
-    setCurso({});
-    setshowEdit(false);
-  }
-  async function atualizarEvent(){
-    let result= await put(`curso/${codCurso}`,curso,'Não foi possivel atualizar o curso', 'Atualizado com sucesso')
-    setshowEdit(false)
-    setupdateScreen(true)
-  }
-  async function  getCursosByFilter(){
-    let result= await get(`curso/filter/${searchForm.id&& searchForm.id.trim()?searchForm.id:'undefined'}/${searchForm.nomcurso}`,curso,'Não foi possivel obter a listagem de curso com esses parametros', 'Atualizado com sucesso')
-    setlistaCursos(result)
+  async function getCursosByFilter() {
+    let result = await get(
+      `curso/filter/${
+        searchForm.id && searchForm.id.trim() ? searchForm.id : "undefined"
+      }/${searchForm.nomcurso}`,
+      curso,
+      "Não foi possivel obter a listagem de curso com esses parametros",
+      "Atualizado com sucesso"
+    );
+    setlistaCursos(result);
   }
   const updateFormCurso = (e) => {
     setCurso({
@@ -202,7 +215,6 @@ export default function PesquisarCurso() {
   return (
     <Container maxWidth="lg" className={classes.containerC}>
       <Container component="div">
-        <Menu />
         <Paper elevation={3}>
           <div className={classes.titulo}>
             <Hidden xsDown>
@@ -221,14 +233,17 @@ export default function PesquisarCurso() {
                 label="Código do curso"
                 variant="outlined"
                 spacing="5"
-                onChange={(e)=>{updateFormSearchForm(e)}}
+                onChange={(e) => {
+                  updateFormSearchForm(e);
+                }}
               />
               <TextField
                 name="nomcurso"
                 label="Nome do curso"
                 variant="outlined"
-                onChange={(e)=>{updateFormSearchForm(e)}}
-
+                onChange={(e) => {
+                  updateFormSearchForm(e);
+                }}
               />
             </form>
           </Container>
@@ -252,8 +267,8 @@ export default function PesquisarCurso() {
                 color="primary"
                 className={classes.botoes}
                 startIcon={<Icon>edit</Icon>}
-                onClick={() => {
-                  editarEvent();
+                onClick={async (e) => {
+                  await editarEvent(e);
                 }}
               >
                 <DefaultDialogComponent
@@ -264,8 +279,8 @@ export default function PesquisarCurso() {
                 >
                   <TextField
                     name="nomcurso"
-                    value={curso?curso.nomcurso:''}
-                    onChange={e => {
+                    value={curso ? curso.nomcurso : ""}
+                    onChange={(e) => {
                       updateFormCurso(e);
                     }}
                     variant="filled"
@@ -280,8 +295,10 @@ export default function PesquisarCurso() {
                 color="primary"
                 className={classes.botoes}
                 startIcon={<Icon>search</Icon>}
-                onClick={(e)=>{e.preventDefault();
-                  getCursosByFilter(e)}}
+                onClick={(e) => {
+                  e.preventDefault();
+                  getCursosByFilter(e);
+                }}
                 label="search"
               >
                 Pesquisar
@@ -366,5 +383,3 @@ export default function PesquisarCurso() {
     </Container>
   );
 }
-
-//teste teste teste
