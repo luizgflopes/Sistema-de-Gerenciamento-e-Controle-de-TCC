@@ -1,36 +1,33 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
-import * as serviceWorker from "./serviceWorker";
+import React from "react"
+import ReactDOM from "react-dom"
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import CadastroPage from './pages/Cadastro-page'
-import NovoCurso from './pages/NovoCurso';
+import NovoCurso from './pages/NovoCurso'
 import EditarCurso from './pages/EditarCurso';
-import PesquisarCurso from './pages/PesquisarCurso';
+import PesquisarCurso from './pages/PesquisarCurso'
 import CronogramaPage from './pages/Cronograma-page'
 import ConsultaUsuario from './pages/ConsultaUsuarioPages'
 import cadastraUsuario from './pages/CadastroUsuarioPages'
 import cadastrarTCC from './pages/CadastrarTcc'
-
-import Menu from './components/Menu'
-
+import LoginPage from './pages/LoginPage'
+import ConfiguredPage from './components/ConfiguredPageComponent'
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <Menu />
       <Switch>
-        <Route path='/cadastraUsuario'  component={cadastraUsuario} />
-        <Route path='/ConsultaUsuario' component={ConsultaUsuario} />
-        <Route path='/NovoCurso' component={NovoCurso} />
-        <Route path='/EditarCurso' component={EditarCurso} />
-        <Route path='/PesquisarCurso' component={PesquisarCurso} />
-        <Route path='/CronogramaPage' component={CronogramaPage} />
-        <Route path='/cadastrartcc' component={cadastrarTCC} />
+        <ConfiguredPage authed={true} showMenu={true}  path='/cadastraUsuario'  component={cadastraUsuario} />
+        <ConfiguredPage authed={true} showMenu={true}  path='/ConsultaUsuario' component={ConsultaUsuario} />
+        <ConfiguredPage authed={true} showMenu={true}  path='/NovoCurso' component={NovoCurso} />
+        <ConfiguredPage authed={true} showMenu={true}  path='/EditarCurso' component={EditarCurso} />
+        <ConfiguredPage authed={true} showMenu={true}  path='/PesquisarCurso' component={PesquisarCurso} />
+        <ConfiguredPage authed={true} showMenu={true}  path='/CronogramaPage' component={CronogramaPage} />
+        <ConfiguredPage authed={true} showMenu={true}  path='/cadastrartcc' component={cadastrarTCC} />
+        <Route path='/login' component={LoginPage} />
 
         <Route path="/criarconta">
           <CadastroPage />
         </Route>
-
+        
 {/*     <Route exact path="/">
           <MainPage />
         </Route>
@@ -68,8 +65,3 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById("root")
 );
-
-// If you want your app to work offline and load faster, you can chan
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();

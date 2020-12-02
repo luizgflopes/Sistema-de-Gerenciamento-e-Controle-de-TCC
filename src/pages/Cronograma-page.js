@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import logo from "../images/iconetcc.png";
+import CssBaseline from '@material-ui/core/CssBaseline'
 import Container from "@material-ui/core/Container";
-import { useHistory, Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import MenuItem from "@material-ui/core/MenuItem";
 import DefaultLayoutComponent from "../components/DefaultLayoutComponent";
@@ -111,7 +107,7 @@ export default function CronogramaPage() {
                 >
                   {listaCursos.map((option) => (
                     <MenuItem key={option.id} value={option.id}>
-                      {option.nomcurso}
+                      {option.Curso.nomcurso}
                     </MenuItem>
                   ))}
                 </TextField>
