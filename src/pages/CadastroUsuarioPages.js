@@ -52,7 +52,7 @@ export default function CadastroUsuario() {
     nomCurso: '',
     telefone: '',
     senha: '',
-    sexo: null,
+    sexo: '',
     desEndereco: '',
     dataNasc: '',
   })
