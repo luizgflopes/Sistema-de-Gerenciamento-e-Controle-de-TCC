@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Container from "@material-ui/core/Container";
-import { makeStyles, Grid, TablePagination } from "@material-ui/core/";
+import {
+  makeStyles,
+  Grid,
+  TablePagination,
+  withStyles,
+} from "@material-ui/core/";
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
@@ -17,8 +24,18 @@ import TableBody from "@material-ui/core/TableBody";
 import Tooltip from "@material-ui/core/Tooltip";
 import { useHistory } from "react-router-dom";
 import Menu from "../components/Menu";
+import { yellow } from "@material-ui/core/colors";
 import { get, put, excluir } from "../infrastructure/axiosApi";
 import DefaultDialogComponent from "../components/DefaultDialogComponent";
+const ColorButton = withStyles((theme) => ({
+  root: {
+    color: theme.palette.getContrastText(yellow[500]),
+    backgroundColor: yellow[500],
+    "&:hover": {
+      backgroundColor: yellow[700],
+    },
+  },
+}))(Button);
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -108,7 +125,6 @@ const useStyles = makeStyles((theme) => ({
 export default function PesquisarCurso() {
   const classes = useStyles();
   const [searchForm, setsearchForm] = useState({
-    id: "",
     nomcurso: "undefined",
   });
   const [updateScreen, setupdateScreen] = useState(true);
@@ -148,6 +164,7 @@ export default function PesquisarCurso() {
   };
   const deleteCursoFunc = () => {
     excluir(`curso/${codCurso}`);
+    setlistaCursos(listaCursos.filter((x) => x.id != codCurso));
   };
   const hostHistory = useHistory();
 
@@ -160,38 +177,50 @@ export default function PesquisarCurso() {
   };
 
   async function onCloseModal() {
-    await new Promise(resolve => setTimeout(resolve, 500))
+    await new Promise((resolve) => setTimeout(resolve, 500));
     setshowEdit(false);
     setupdateScreen(true);
   }
   async function atualizarEvent() {
-    let result = await put(
+    let result =  put(
       `curso/${codCurso}`,
       curso,
       "Não foi possivel atualizar o curso",
-      "Atualizado com sucesso"
+      "Atualizado com sucesso",
+      async (messagem)=>{
+        NotificationManager.warning( messagem,'', 3000);
+
+      }
     );
-    setshowEdit(false);
+    await setTimeout(() => {
+      setshowEdit(false);
+
+    }, 1);
     setupdateScreen(true);
   }
-  async function editarEvent(e) {
-    if (e.type === "click") {
+  const handleOpen = () => {
+    setshowEdit(true);
+  };
+  const  editarEvent =async()=> {
+    setshowEdit(true);
+
+    var codCursoValidator = codCurso==null||codCurso===0;
+    if(codCursoValidator){
+      NotificationManager.warning( 'Você precisa selecionar um curso na listagem','Selecione um curso', 3000);
+    }
       let result = await get(
-        `curso/${codCurso}`,
+        `curso/id/${codCurso}`,
         "Ouve um erro ao obter os dados deste curso",
         "Sucesso"
       );
       setCurso(result);
-      if (curso) {
-        setshowEdit(true);
-      }
+      if (curso&&curso=={}) {
+        setshowEdit(false);
     }
   }
   async function getCursosByFilter() {
-    let result = await get(
-      `curso/filter/${
-        searchForm.id && searchForm.id.trim() ? searchForm.id : "undefined"
-      }/${searchForm.nomcurso}`,
+   let result = await get(
+      `curso/${searchForm.nomcurso}`,
       curso,
       "Não foi possivel obter a listagem de curso com esses parametros",
       "Atualizado com sucesso"
@@ -226,17 +255,9 @@ export default function PesquisarCurso() {
               <Paper className={classes.paperDireita}>Pesquisar Cursos</Paper>
             </Hidden>
           </div>
-          <Container component="div" className={classes.containerInput}>
-            <form className={classes.root} noValidate autoComplete="on">
-              <TextField
-                name="id"
-                label="Código do curso"
-                variant="outlined"
-                spacing="5"
-                onChange={(e) => {
-                  updateFormSearchForm(e);
-                }}
-              />
+          <Grid container direction="row" justify="center" alignItems="center">
+            
+            <div className={classes.root} >
               <TextField
                 name="nomcurso"
                 label="Nome do curso"
@@ -245,8 +266,8 @@ export default function PesquisarCurso() {
                   updateFormSearchForm(e);
                 }}
               />
-            </form>
-          </Container>
+            </div>
+          </Grid>
           <Container component="div">
             <Tooltip title="Adicionar Curso" interactive>
               <Button
@@ -265,11 +286,10 @@ export default function PesquisarCurso() {
               <Button
                 variant="contained"
                 color="primary"
+                type="button"
                 className={classes.botoes}
                 startIcon={<Icon>edit</Icon>}
-                onClick={async (e) => {
-                  await editarEvent(e);
-                }}
+                onClick={editarEvent}
               >
                 <DefaultDialogComponent
                   onClose={onCloseModal}
@@ -304,12 +324,29 @@ export default function PesquisarCurso() {
                 Pesquisar
               </Button>
             </Tooltip>
+            <Tooltip title="Limpar filtros" interactive>
+              <ColorButton
+                variant="contained"
+                color="primary"
+                className={classes.botoes}
+                startIcon={<Icon>search</Icon>}
+                onClick={(e) => {
+                  setupdateScreen(true);
+                }}
+                label="search"
+              >
+                Limpar filtros
+              </ColorButton>
+            </Tooltip>
             <Tooltip title="Excluir Curso" interactive>
               <Button
                 variant="contained"
                 style={{ backgroundColor: "red", color: "white" }}
                 className={classes.botoes}
                 startIcon={<DeleteIcon />}
+                onClick={(e) => {
+                  deleteCursoFunc();
+                }}
               >
                 Excluir
               </Button>
@@ -380,6 +417,8 @@ export default function PesquisarCurso() {
           </Paper>
         </Container>
       </Container>
+      <NotificationContainer/>
+
     </Container>
   );
 }

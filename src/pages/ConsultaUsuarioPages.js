@@ -1,11 +1,12 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Container from "@material-ui/core/Container";
 import { makeStyles, Grid, TablePagination } from "@material-ui/core/";
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
-import DeleteIcon from "@material-ui/icons/Delete";
 import Icon from "@material-ui/core/Icon";
+
+import DeleteIcon from "@material-ui/icons/Delete";
 import Newton from "../images/newton.png";
 import Hidden from "@material-ui/core/Hidden";
 import TableCell from "@material-ui/core/TableCell";
@@ -14,16 +15,19 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import EditButtonModal from "../modal/editar-usuario.modal";
 import Tooltip from "@material-ui/core/Tooltip";
 import { useHistory } from "react-router-dom";
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from "@material-ui/core/FormControl";
+import FilledInput from "@material-ui/core/FilledInput";
+
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
 import DefaultDialogComponent from "../components/DefaultDialogComponent";
-import { get, put,excluir} from "../infrastructure/axiosApi";
+import { get, put, excluir } from "../infrastructure/axiosApi";
 
-const axios = require('axios')
-
+const axios = require("axios");
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,13 +40,16 @@ const useStyles = makeStyles((theme) => ({
       margintop: theme.spacing(20),
     },
   },
+  modalroot: {
+    flexGrow: 1,
+  },
   tableRow: {
     "&.Mui-selected, &.Mui-selected:hover": {
       backgroundColor: "#0019ffa6",
       "& > .MuiTableCell-root": {
-        color: "white"
-      }
-    }
+        color: "white",
+      },
+    },
   },
   botoes: {
     marginRight: "41px",
@@ -112,16 +119,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 export default function ConsultaUsuarioPages() {
   const classes = useStyles();
   const [Formulario, setFormulario] = useState({
-    nome:'',
-    email: '',
-    matricula: '',
-    curso: '',
+    nome: "",
+    email: "",
+    matricula: "",
+    curso: "",
   });
-  
+
   const [listaUsuario, setListaUsuario] = useState([]);
   const [listaUsuarioBackup, setListaUsuarioBackup] = useState([]);
   const [showEdit, setshowEdit] = useState(false);
@@ -131,14 +137,14 @@ export default function ConsultaUsuarioPages() {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    axios.get("http://localhost:3001/usuario").then(function (response) {
-      console.log('user',response)
-      setListaUsuario(response.data)
-      setupdateScreen(false);
+    axios
+      .get("http://localhost:3001/usuario")
+      .then(function (response) {
+        console.log("user", response);
+        setListaUsuario(response.data);
+        setupdateScreen(false);
       })
-      .catch(function (error) {
-      });
-
+      .catch(function (error) {});
   }, [updateScreen]);
 
   const [listaCursos, setlistaCursos] = useState([]);
@@ -152,43 +158,54 @@ export default function ConsultaUsuarioPages() {
         })
         .catch(function (error) {});
     };
-    
 
     getCursos();
   }, []);
-  
-  const pesquisarPorFiltro=()=>{
-    setListaUsuario(listaUsuarioBackup)
-    if(Formulario.nome&&Formulario.nome.trim()){
-      setListaUsuario(listaUsuario.filter((a)=>{
-        return a.nome==Formulario.nome
-      }))
+
+  const pesquisarPorFiltro = () => {
+    setListaUsuario(listaUsuarioBackup);
+    if (Formulario.nome && Formulario.nome.trim()) {
+      setListaUsuario(
+        listaUsuario.filter((a) => {
+          return a.nome == Formulario.nome;
+        })
+      );
     }
-    if(Formulario.email&&Formulario.email.trim()){
-      setListaUsuario(listaUsuario.filter((a)=>{
-        return a.email==Formulario.email
-      }))
+    if (Formulario.email && Formulario.email.trim()) {
+      setListaUsuario(
+        listaUsuario.filter((a) => {
+          return a.email == Formulario.email;
+        })
+      );
     }
-    if(Formulario.curso){
-      setListaUsuario(listaUsuario.filter((a)=>{
-        return a.Curso.id==Formulario.curso
-      }))
+    if (Formulario.curso) {
+      setListaUsuario(
+        listaUsuario.filter((a) => {
+          return a.Curso.id == Formulario.curso;
+        })
+      );
     }
-    if(Formulario.matricula){
-      setListaUsuario(listaUsuario.filter((a)=>{
-        return a.matricula==Formulario.matricula
-      }))
+    if (Formulario.matricula) {
+      setListaUsuario(
+        listaUsuario.filter((a) => {
+          return a.matricula == Formulario.matricula;
+        })
+      );
     }
-  }
-  async function atualizarEvent(){
-     let result= await put(`usuario/${id}`,usuario,'Não foi possivel atualizar o curso', 'Atualizado com sucesso')
-     setshowEdit(false)
-     setupdateScreen(true)
+  };
+  async function atualizarEvent() {
+    let result = await put(
+      `usuario/${id}`,
+      usuario,
+      "Não foi possivel atualizar o curso",
+      "Atualizado com sucesso"
+    );
+    setshowEdit(false);
+    setupdateScreen(true);
   }
   function onCloseModal() {
     setshowEdit(false);
     setUsuario({});
-
   }
   const updateForm = (e) => {
     setFormulario({
@@ -209,31 +226,29 @@ export default function ConsultaUsuarioPages() {
     setPage(0);
   };
 
-
-    /** Relacionado a Selecao da Lista de Usuário*/
+  /** Relacionado a Selecao da Lista de Usuário*/
 
   const activeRow = (event, linha) => {
     event.preventDefault();
     setId(linha.id);
-    console.log(linha,id)
+    console.log(linha, id);
   };
 
   const hostHistory = useHistory();
 
   const editarButtonClick = () => {
-    setshowEdit(true)
+    setshowEdit(true);
   };
 
-  const deletarUsuario = () =>{
-    axios.delete(`http://localhost:3001/usuario/${id}`).then((sucess)=>{
-        if(sucess){
-          setListaUsuario(listaUsuario.filter((e)=>(e.id !== id)))
-          alert("Usuário Excluído com Sucesso!")
-        }
+  const deletarUsuario = () => {
+    axios.delete(`http://localhost:3001/usuario/${id}`).then((sucess) => {
+      if (sucess) {
+        setListaUsuario(listaUsuario.filter((e) => e.id !== id));
+        alert("Usuário Excluído com Sucesso!");
       }
-    );
-    
-  }
+    });
+  };
+
   return (
     <Container maxWidth="lg" className={classes.containerC}>
       <Container component="div">
@@ -257,19 +272,26 @@ export default function ConsultaUsuarioPages() {
                 spacing="5"
                 onChange={updateForm}
               />
-              <TextField name="email" label="E-mail" variant="outlined" onChange={updateForm} />
+              <TextField
+                name="email"
+                label="E-mail"
+                variant="outlined"
+                onChange={updateForm}
+              />
               <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel htmlFor="outlined-age-native-simple">Curso</InputLabel>
+                <InputLabel htmlFor="outlined-age-native-simple">
+                  Curso
+                </InputLabel>
                 <Select
-                 id="outlined-age-native-simple"
-                 select
-                 label="Selecione o curso"
-                 name="curso"
-                 onChange={updateForm}
-                 helperText="Por favor selecione um curso"
+                  id="outlined-age-native-simple"
+                  select
+                  label="Selecione o curso"
+                  name="curso"
+                  onChange={updateForm}
+                  helperText="Por favor selecione um curso"
                   inputProps={{
-                    name: 'curso',
-                    id: 'outlined-age-native-simple',
+                    name: "curso",
+                    id: "outlined-age-native-simple",
                   }}
                 >
                   {listaCursos.map((option) => (
@@ -279,7 +301,12 @@ export default function ConsultaUsuarioPages() {
                   ))}
                 </Select>
               </FormControl>
-              <TextField name="matricula" label="Matricula" variant="outlined" onChange={updateForm} />
+              <TextField
+                name="matricula"
+                label="Matricula"
+                variant="outlined"
+                onChange={updateForm}
+              />
             </form>
           </Container>
           <Container component="div">
@@ -294,37 +321,13 @@ export default function ConsultaUsuarioPages() {
               </Button>
             </Tooltip>
             <Tooltip title="Editar Usuário" interactive>
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.botoes}
-                startIcon={<Icon>edit</Icon>}
-                onClick={() => {
-                  editarButtonClick();
-                }}
-                
-              >
-                 <DefaultDialogComponent
-                  onClose={onCloseModal}
-                  open={showEdit}
-                  confirmAction={atualizarEvent}
-                  title="Editar Curso"
-                >
-                  <TextField
-                    name="nomcurso"
-                    value=''
-                    
-                    variant="filled"
-                  />
-                </DefaultDialogComponent>
-                Editar
-              </Button>
+              <EditButtonModal disabled={id!=0} id={id} />
             </Tooltip>
             <Tooltip title="Pesquisar Usuário" interactive>
               <Button
                 variant="contained"
                 color="primary"
-                onClick={()=>{}}
+                onClick={() => {}}
                 className={classes.botoes}
                 startIcon={<Icon>search</Icon>}
               >
@@ -389,7 +392,9 @@ export default function ConsultaUsuarioPages() {
                         {linha.email}
                       </TableCell>
                       <TableCell className={"MuiTableCell-alignCenter"}>
-                        {linha.curso&&linha.curso.nomcurso?linha.curso.nomcurso:""}
+                        {linha.Curso && linha.Curso.nomcurso
+                          ? linha.Curso.nomcurso
+                          : ""}
                       </TableCell>
                       <TableCell className={"MuiTableCell-alignCenter"}>
                         {linha.matricula}

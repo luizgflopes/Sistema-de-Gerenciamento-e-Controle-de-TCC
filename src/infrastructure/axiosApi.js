@@ -4,13 +4,16 @@ const axiosApi= axios.create({
   baseURL: `http://localhost:3001/`
 });
 
-export async function get(url,errorMenssage,sucessMenssage){
+export async function get(url,sucessMenssage,errorMenssage,callback){
     return await axiosApi.get(url)
-    .then(r=>{
+    .then(async r=>{
         console.log("api",r)
+        await callback(sucessMenssage);
         return r.data;
       //  notificationHook(sucessMenssage)
-    }).catch(err=>{
+    }).catch(async err=>{
+      await callback(errorMenssage);
+
         return null;
     })
 }
@@ -24,13 +27,16 @@ export async function post(url,bodyParams,errorMenssage,sucessMenssage){
         return null;
     })
 }
-export async function put(url,bodyParams,errorMenssage,sucessMenssage){
+export async function put(url,bodyParams,errorMenssage,sucessMenssage,callback){
     return await axiosApi.put(url,bodyParams)
-    .then(r=>{
+    .then(async r=>{
         console.log("api",r)
+        await callback(sucessMenssage)
         return r;
       //  notificationHook(sucessMenssage)
     }).catch(err=>{
+      callback(errorMenssage)
+
         return null;
     })
 }
